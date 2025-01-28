@@ -16,6 +16,6 @@ html, body, #root {
   display: flex;
 }
 
-.dark {
+body {
   background-color: #f0f2f5; /* Match your dark mode color */
 }
