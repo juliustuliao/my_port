@@ -208,7 +208,7 @@ const Portfolio = () => {
 
         <section id="projects" className="py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-600  dark:text-white ">
               Featured Projects
             </h2>
             
