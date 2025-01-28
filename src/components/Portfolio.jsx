@@ -18,7 +18,7 @@ const PROJECTS = [
       title: "Web Development Portfolio",
       description: "Consistently create well-designed, tested code using best practices for website development, including mobile and responsive site design. Integrate back-end databases and services.",
       tags: ["HTML/CSS", "JavaScript", "Responsive Design", "Backend Integration"],
-      category: "frontend",
+      category: "ai",
       githubLink: "#",
       liveLink: "#"
     },
