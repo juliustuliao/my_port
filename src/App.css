@@ -16,6 +16,6 @@ body {
 
 
 #root {
-  width: 100%;
+  width: auto;
   overflow-x: hidden;
 }
