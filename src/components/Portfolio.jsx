@@ -34,7 +34,7 @@ const PROJECTS = [
   
   const SKILLS = [
     { 
-      category: "Frontend",
+      category: "AI",
       items: ["Web3", "HTML/CSS", "JavaScript", "Responsive Design", "UI/UX"]
     },
     { 
@@ -49,7 +49,7 @@ const PROJECTS = [
   
   const CATEGORIES = [
     { id: 'all', label: 'All Projects' },
-    { id: 'frontend', label: 'Frontend' },
+    { id: 'ai', label: 'AI' },
     { id: 'fullstack', label: 'Full Stack' },
     { id: 'backend', label: 'Backend' }
   ];
