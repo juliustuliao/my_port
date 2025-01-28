@@ -6,59 +6,59 @@ import {
 } from 'lucide-react';
 
 const PROJECTS = [
-  {
-    title: "E-commerce Platform",
-    description: "Built a full-stack e-commerce platform using React, Node.js, and MongoDB. Implemented features like user authentication, shopping cart, and payment processing.",
-    tags: ["React", "Node.js", "MongoDB", "Express"],
-    category: "fullstack",
-    githubLink: "#",
-    liveLink: "#"
-  },
-  {
-    title: "Task Management App",
-    description: "Developed a Kanban-style task management application with real-time updates using React and Firebase. Features include drag-and-drop functionality and team collaboration.",
-    tags: ["React", "Firebase", "TypeScript", "Tailwind"],
-    category: "frontend",
-    githubLink: "#",
-    liveLink: "#"
-  },
-  {
-    title: "Weather Dashboard",
-    description: "Created a weather dashboard that displays current weather and 5-day forecast using OpenWeather API. Implemented geolocation and search functionality.",
-    tags: ["JavaScript", "REST API", "HTML/CSS"],
-    category: "frontend",
-    githubLink: "#",
-    liveLink: "#"
-  }
-];
-
-const SKILLS = [
-  { 
-    category: "Frontend",
-    items: ["React", "JavaScript", "TypeScript", "HTML/CSS", "Tailwind CSS"]
-  },
-  { 
-    category: "Backend",
-    items: ["Node.js", "Express", "Python", "MongoDB", "PostgreSQL"]
-  },
-  { 
-    category: "Tools",
-    items: ["Git", "Docker", "AWS", "Jest", "Webpack"]
-  }
-];
-
-const CATEGORIES = [
-  { id: 'all', label: 'All Projects' },
-  { id: 'frontend', label: 'Frontend' },
-  { id: 'fullstack', label: 'Full Stack' },
-  { id: 'backend', label: 'Backend' }
-];
-
-const SOCIAL_LINKS = [
-  { icon: GithubIcon, label: 'GitHub', href: '#' },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: '#' },
-  { icon: MailIcon, label: 'Email', href: 'mailto:example@email.com' }
-];
+    {
+      title: "RPA Development Projects",
+      description: "Design, develop, and implement software robots using various RPA tools (UiPath, WinAuto, Automation Anywhere, Robocorp) to enhance business processes and improve operational efficiency.",
+      tags: ["RPA", "UiPath", "Automation Anywhere", "Robocorp"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#"
+    },
+    {
+      title: "Web Development Portfolio",
+      description: "Consistently create well-designed, tested code using best practices for website development, including mobile and responsive site design. Integrate back-end databases and services.",
+      tags: ["HTML/CSS", "JavaScript", "Responsive Design", "Backend Integration"],
+      category: "frontend",
+      githubLink: "#",
+      liveLink: "#"
+    },
+    {
+      title: "AI & NLP Solutions",
+      description: "Drive innovation by implementing latest AI research and enhancing products. Specializing in Python & NLP development with strong problem-solving capabilities.",
+      tags: ["Python", "NLP", "AI", "Machine Learning"],
+      category: "backend",
+      githubLink: "https://huggingface.co/juliuserictuliao",
+      liveLink: "#"
+    }
+  ];
+  
+  const SKILLS = [
+    { 
+      category: "Frontend",
+      items: ["Web3", "HTML/CSS", "JavaScript", "Responsive Design", "UI/UX"]
+    },
+    { 
+      category: "Backend",
+      items: ["Python", "SQL", "NLP", "AI Implementation", "Database Management"]
+    },
+    { 
+      category: "Tools",
+      items: ["UiPath", "Automation Anywhere", "Robocorp", "Visual Basic", "Git"]
+    }
+  ];
+  
+  const CATEGORIES = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'frontend', label: 'Frontend' },
+    { id: 'fullstack', label: 'Full Stack' },
+    { id: 'backend', label: 'Backend' }
+  ];
+  
+  const SOCIAL_LINKS = [
+    { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
+    { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
+    { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
+  ];
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,7 +124,7 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              John Doe
+             Julius Eric Tuliao
             </h1>
             
             <div className="hidden md:flex items-center space-x-8">
