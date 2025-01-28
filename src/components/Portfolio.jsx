@@ -5,7 +5,6 @@ import {
   MoonIcon, SunIcon 
 } from 'lucide-react';
 
-// Move static data to constants
 const PROJECTS = [
   {
     title: "E-commerce Platform",
@@ -15,7 +14,22 @@ const PROJECTS = [
     githubLink: "#",
     liveLink: "#"
   },
-  // ... other projects
+  {
+    title: "Task Management App",
+    description: "Developed a Kanban-style task management application with real-time updates using React and Firebase. Features include drag-and-drop functionality and team collaboration.",
+    tags: ["React", "Firebase", "TypeScript", "Tailwind"],
+    category: "frontend",
+    githubLink: "#",
+    liveLink: "#"
+  },
+  {
+    title: "Weather Dashboard",
+    description: "Created a weather dashboard that displays current weather and 5-day forecast using OpenWeather API. Implemented geolocation and search functionality.",
+    tags: ["JavaScript", "REST API", "HTML/CSS"],
+    category: "frontend",
+    githubLink: "#",
+    liveLink: "#"
+  }
 ];
 
 const SKILLS = [
@@ -23,7 +37,14 @@ const SKILLS = [
     category: "Frontend",
     items: ["React", "JavaScript", "TypeScript", "HTML/CSS", "Tailwind CSS"]
   },
-  // ... other skills
+  { 
+    category: "Backend",
+    items: ["Node.js", "Express", "Python", "MongoDB", "PostgreSQL"]
+  },
+  { 
+    category: "Tools",
+    items: ["Git", "Docker", "AWS", "Jest", "Webpack"]
+  }
 ];
 
 const CATEGORIES = [
@@ -48,7 +69,6 @@ const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Memoized filtered projects
   const filteredProjects = useMemo(() => 
     activeFilter === 'all' 
       ? PROJECTS 
@@ -98,7 +118,7 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden relative">
       <nav className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -106,7 +126,6 @@ const Portfolio = () => {
               John Doe
             </h1>
             
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {['About', 'Projects', 'Skills', 'Contact'].map((item) => (
                 <a 
@@ -120,7 +139,6 @@ const Portfolio = () => {
               <ThemeToggle />
             </div>
 
-            {/* Mobile Navigation */}
             <div className="md:hidden flex items-center space-x-4">
               <ThemeToggle />
               <button 
@@ -134,7 +152,6 @@ const Portfolio = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${
           isMenuOpen ? 'max-h-96' : 'max-h-0'}`}
         >
@@ -155,8 +172,7 @@ const Portfolio = () => {
 
       <main className={`min-h-screen w-full transition-colors duration-300 ${
         isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-gray-50 to-blue-50'
-      }`}>
-        {/* Hero Section */}
+      } overflow-hidden`}>
         <section id="about" className="py-24">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center space-y-6">
@@ -189,7 +205,6 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* Projects Section */}
         <section id="projects" className="py-20">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">
@@ -255,7 +270,6 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* Skills Section */}
         <section id="skills" className="py-20 bg-white dark:bg-gray-800">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">
@@ -270,7 +284,7 @@ const Portfolio = () => {
                   <h3 className="text-lg font-semibold mb-4 text-blue-600 dark:text-blue-400">
                     {skillGroup.category}
                   </h3>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {skillGroup.items.map((skill, skillIndex) => (
                       <div 
                         key={skillIndex}
@@ -287,10 +301,9 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* Contact Section */}
         <section id="contact" className="py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden w-[calc(100%-2rem)]">
               <div className="px-8 py-12 text-center">
                 <h2 className="text-3xl font-bold mb-4 dark:text-white">Let's Connect</h2>
                 <p className="text-gray-600 dark:text-gray-300 mb-8">
