@@ -120,7 +120,6 @@ const Portfolio = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative bg-white dark:bg-gray-900">
-    <div className="w-full overflow-x-hidden relative">
       <nav className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -340,7 +339,6 @@ const Portfolio = () => {
           </div>
         </section>
       </main>
-    </div>
     </div>
   );
 };
