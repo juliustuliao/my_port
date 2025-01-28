@@ -6,16 +6,19 @@
   scroll-behavior: smooth;
 }
 
-body {
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
-  width: 100%;
   overflow-x: hidden;
 }
 
+body {
+  display: block; /* Remove flex if it's causing issues */
+}
 
-
-#root {
-  width: auto;
-  overflow-x: hidden;
+.dark {
+  background-color: #111827; /* Match your dark mode color */
 }
