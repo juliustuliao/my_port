@@ -306,7 +306,7 @@ const Portfolio = () => {
           <div className="max-w-6xl mx-auto px-4">
             <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden w-[calc(100%-2rem)]">
               <div className="px-8 py-12 text-center">
-                <h2 className="text-3xl font-bold mb-4 dark:text-white">Let's Connect</h2>
+                <h2 className="text-3xl font-bold mb-4 text-gray-600  dark:text-white">Let's Connect</h2>
                 <p className="text-gray-600 dark:text-gray-300 mb-8">
                   Have a project in mind? Let's turn your vision into reality.
                 </p>
