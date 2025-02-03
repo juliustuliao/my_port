@@ -96,25 +96,74 @@ const PROJECTS = [
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Enterprise Data Warehouse Infrastructure",
+      description: "Architected and implemented company's initial data warehouse using AWS RDS and EC2. Developed Flask-based REST API for data access, enabling seamless integration with business intelligence tools and establishing foundation for data-driven decision making.",
+      tags: ["AWS", "RDS", "Flask", "API Development", "Data Warehouse", "EC2"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Route Optimization Engine",
+      description: "Developed an advanced route optimization system processing 10,000+ possible destinations. Increased field productivity by 66% (from 15 to 25 daily account visits) through intelligent route planning and optimization algorithms.",
+      tags: ["Python", "Optimization", "Algorithms", "Data Science"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Address Intelligence ML Model",
+      description: "Created machine learning model for city and province detection from unstructured addresses. Trained on 100K geocoding results from Google Maps and HERE APIs, achieving 85% accuracy in address component classification.",
+      tags: ["Machine Learning", "NLP", "Google Maps API", "HERE API", "Python"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Enterprise Analytics Dashboard Suite",
+      description: "Designed comprehensive visualization dashboards using Tableau and Google Looker Studio for email, SMS, and field operations data. Created interactive maps and KPI tracking systems for business intelligence.",
+      tags: ["Tableau", "Google Looker", "Data Visualization", "BI", "Analytics"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Banking Reports Automation",
+      description: "Developed VBA applications to automate complex banking report generation. Eliminated manual copy-paste operations, automated formula applications, and streamlined file creation processes.",
+      tags: ["VBA", "Excel", "Process Automation", "Financial Reports"],
+      category: "rpa",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     }
   ];
   
   const SKILLS = [
     {
       category: "RPA Development",
-      items: ["UiPath", "Winautomation", "Robocorp", "Process Design", "Business Analysis"]
+      items: ["UiPath", "Winautomation", "Robocorp", "Process Design", "Business Analysis", "VBA", "Excel Automation"]
     },
     {
       category: "AI & Machine Learning",
-      items: ["Python", "NLP", "TensorFlow", "Computer Vision", "LLM", "ASR", "Modelling", "Finetuning"]
+      items: ["Python", "NLP", "TensorFlow", "Computer Vision", "LLM", "ASR", "Modelling", "Finetuning", "Route Optimization", "Geocoding ML"]
     },
     {
       category: "Full Stack Development",
       items: ["Python", "Node.js", "PostgreSQL", "REST APIs", "Webhook", "AWS", "Alibaba", "MySQL", "SQLite", "Excel", "Web3"]
     },
     {
+      category: "Data & Analytics",
+      items: ["Tableau", "Google Looker Studio", "Data Warehousing", "ETL", "Data Modeling", "Business Intelligence", "GIS"]
+    },
+    {
       category: "Tools & Technologies",
-      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis"]
+      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis", "Google Maps API", "HERE API"]
     }
   ];
   
@@ -125,13 +174,11 @@ const PROJECTS = [
     { id: 'fullstack', label: 'Full Stack' }
   ];
   
-
-const SOCIAL_LINKS = [
-  { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
-  { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
-  { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
-];
-
+  const SOCIAL_LINKS = [
+    { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
+    { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
+    { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
+  ];
 const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => (
   <button
     onClick={() => setIsDarkMode(!isDarkMode)}
