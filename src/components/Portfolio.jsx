@@ -84,6 +84,51 @@ const CATEGORIES = [
   
   const PROJECTS = [
     {
+      title: "Tagalog ASR Engine",
+      description: "Fine-tuned Whisper model on 36,000+ minutes of Tagalog voice recordings using LoRA. Deployed on AWS ECS/EC2 using Flask, achieving high accuracy in Tagalog speech recognition. Built foundation for multiple speech-to-text applications.",
+      tags: ["ASR", "Fine-tuning", "LoRA", "AWS", "Flask", "Docker"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "AI Research Assistant",
+      description: "Developed autonomous research agent utilizing browser automation and LLM technology. Created intelligent system capable of understanding complex instructions and executing multi-step web research tasks automatically.",
+      tags: ["LLM", "Web Automation", "AI Agent", "browser_use", "Research Automation"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "ALPR System",
+      description: "Implemented computer vision solution using fine-tuned YOLOv8 for automated license plate and conduction sticker detection. Custom-trained on 5 specialized datasets for optimal accuracy in local conditions.",
+      tags: ["Computer Vision", "YOLOv8", "Object Detection", "Fine-tuning"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "RAG-Based Customer Support AI",
+      description: "Built conversational AI system handling 40K+ messages monthly, resolving 80% of Level 1 inquiries. Utilized LlamaIndex, vector DB, Docker, Redis, and VLLM with intelligent human escalation protocols.",
+      tags: ["RAG", "LlamaIndex", "Vector DB", "VLLM", "Redis", "Docker"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Delivery Status Chatbot",
+      description: "Created automated response system handling 100K+ monthly rider inquiries. Integrated REST APIs to sync local and cloud databases for real-time parcel status updates and automated communications.",
+      tags: ["API Development", "Database Integration", "Chatbot", "Real-time Updates"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
       title: "AI Call Center Quality Assurance",
       description: "Engineered an AI-powered QA system analyzing 90,000+ monthly calls. Automated violation detection, opportunity identification, and conversation quality scoring using advanced NLP and speech processing.",
       tags: ["NLP", "Speech Processing", "Machine Learning", "Quality Analytics"],
