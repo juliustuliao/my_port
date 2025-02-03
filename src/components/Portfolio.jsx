@@ -6,98 +6,125 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon 
 } from 'lucide-react';
-
 const PROJECTS = [
-  {
-    title: "UiPath Automation Suite",
-    description: "Developed end-to-end automation solutions for invoice processing, reducing processing time by 75%. Implemented OCR and machine learning for document classification.",
-    tags: ["UiPath", "OCR", "ML", "Process Automation"],
-    category: "rpa",
-    githubLink: "#",
-    liveLink: "#",
-    images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400"
-    ]
-  },
-  {
-    title: "Robocorp Healthcare Bot",
-    description: "Created an automated system for medical records processing, ensuring HIPAA compliance and 99.9% accuracy in data entry. Integrated with existing EMR systems.",
-    tags: ["Robocorp", "Healthcare", "Python", "API Integration"],
-    category: "rpa",
-    githubLink: "#",
-    liveLink: "#",
-    images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400"
-    ]
-  },
-  {
-    title: "NLP Document Classifier",
-    description: "Built a machine learning model using BERT for automated document classification. Achieved 95% accuracy in categorizing legal documents.",
-    tags: ["Python", "NLP", "BERT", "Machine Learning"],
-    category: "ai",
-    githubLink: "https://huggingface.co/juliuserictuliao",
-    liveLink: "#",
-    images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400"
-    ]
-  },
-  {
-    title: "Sentiment Analysis Dashboard",
-    description: "Developed a real-time sentiment analysis tool for social media monitoring. Processes over 10,000 tweets per hour with 92% accuracy.",
-    tags: ["Python", "React", "NLP", "Real-time Processing"],
-    category: "ai",
-    githubLink: "#",
-    liveLink: "#",
-    images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400"
-    ]
-  },
-  {
-    title: "E-commerce Platform",
-    description: "Full-stack e-commerce solution with integrated payment processing, inventory management, and real-time analytics.",
-    tags: ["React", "Node.js", "MongoDB", "AWS"],
-    category: "fullstack",
-    githubLink: "#",
-    liveLink: "#",
-    images: [
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400",
-      "/api/placeholder/600/400"
-    ]
-  }
-];
-
-const SKILLS = [
-  {
-    category: "RPA Development",
-    items: ["UiPath", "Automation Anywhere", "Robocorp", "Process Design", "Business Analysis"]
-  },
-  {
-    category: "AI & Machine Learning",
-    items: ["Python", "NLP", "TensorFlow", "BERT", "Hugging Face"]
-  },
-  {
-    category: "Full Stack Development",
-    items: ["React", "Node.js", "MongoDB", "REST APIs", "AWS"]
-  },
-  {
-    category: "Tools & Technologies",
-    items: ["Git", "Docker", "CI/CD", "Agile", "JIRA"]
-  }
-];
-
-const CATEGORIES = [
-  { id: 'all', label: 'All Projects' },
-  { id: 'rpa', label: 'RPA' },
-  { id: 'ai', label: 'AI & ML' },
-  { id: 'fullstack', label: 'Full Stack' }
-];
+    {
+      title: "DIX Gas Sales Encoding Automation",
+      description: "Developed a UiPath automation solution for processing LPG gas sales data, handling over 300,000 kg of sales (50,000+ rows) monthly. Eliminated manual encoding needs, significantly reducing operational costs and human error while improving processing efficiency.",
+      tags: ["UiPath", "Data Processing", "Legacy System Integration", "Process Automation"],
+      category: "rpa",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Intelligent Email Management System",
+      description: "Built an automated email processing system using Lark AnyX and in-house LLM for smart email classification and response. Implemented priority-based routing and automated response generation, streamlining group email management and improving response efficiency.",
+      tags: ["Lark", "LLM Integration", "Email Automation", "NLP", "Process Automation"],
+      category: "rpa",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "AssessMate - Automated Call Center Hiring Solution",
+      description: "Developed an end-to-end hiring automation system processing 20,000 applications monthly. Features custom ASR API, speech fluency assessment models, and automated candidate evaluation, delivering results within 5 minutes of application submission.",
+      tags: ["ASR", "Machine Learning", "API Development", "Speech Processing"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "QA AI - Call Center Quality Assurance",
+      description: "Built an AI-powered QA system analyzing 90,000 calls monthly for violations, missed opportunities, and conversation quality. Automates the entire QA process for call center recordings with comprehensive grading and analysis.",
+      tags: ["NLP", "Audio Processing", "Machine Learning", "Quality Assurance"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Tagalog ASR Engine",
+      description: "Fine-tuned Whisper model on 36,000+ minutes of Tagalog voice recordings using LoRA. Deployed on AWS ECS/EC2 using Flask, serving as foundation for multiple speech-to-text applications.",
+      tags: ["ASR", "Fine-tuning", "AWS", "Flask", "Docker"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Crypto Trading Advisor",
+      description: "Developed a Web3 AI platform utilizing DeepSeek/OpenAI LLMs for cryptocurrency analysis and trading recommendations. Integrated multiple data sources (CoinGecko, CryptoCompare, Etherscan) for comprehensive market analysis.",
+      tags: ["Web3", "LLM", "API Integration", "Cryptocurrency", "Python"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "High-Volume Betting Platform",
+      description: "Built a scalable betting application processing 5M+ bets monthly using Node.js, PostgreSQL, and Redis. Features automated receipt generation, dynamic odds adjustment, and real-time bet management. Deployed across multiple betting arenas.",
+      tags: ["Node.js", "PostgreSQL", "Redis", "High-Scale"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Smart Contract Development Suite",
+      description: "Designed and deployed various smart contracts for betting applications and asset tokenization. Implemented secure, efficient contract logic for multiple client requirements on blockchain platforms.",
+      tags: ["Solidity", "Web3", "Smart Contracts", "Blockchain"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Enterprise CRM System",
+      description: "Developed a comprehensive CRM system for internal and external employee management. Features real-time synchronization between field and office data, automated status updates, and robust database integration.",
+      tags: ["React", "Node.js", "PostgreSQL", "Real-time Sync"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Delivery Status Chatbot",
+      description: "Created an automated response system handling 100K+ monthly rider inquiries. Integrated REST APIs to sync local and cloud databases for real-time parcel status updates and automated communications.",
+      tags: ["API Development", "Database Integration", "Chatbot", "Real-time Updates"],
+      category: "fullstack",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    }
+  ];
+  
+  const SKILLS = [
+    {
+      category: "RPA Development",
+      items: ["UiPath", "Winautomation", "Robocorp", "Process Design", "Business Analysis"]
+    },
+    {
+      category: "AI & Machine Learning",
+      items: ["Python", "NLP", "TensorFlow", "Computer Vision", "LLM", "ASR", "Modelling", "Finetuning"]
+    },
+    {
+      category: "Full Stack Development",
+      items: ["Python", "Node.js", "PostgreSQL", "REST APIs", "Webhook", "AWS", "Alibaba", "MySQL", "SQLite", "Excel", "Web3"]
+    },
+    {
+      category: "Tools & Technologies",
+      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis"]
+    }
+  ];
+  
+  const CATEGORIES = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'rpa', label: 'RPA' },
+    { id: 'ai', label: 'AI & ML' },
+    { id: 'fullstack', label: 'Full Stack' }
+  ];
+  
 
 const SOCIAL_LINKS = [
   { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
