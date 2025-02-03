@@ -2,63 +2,220 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   GithubIcon, LinkedinIcon, MailIcon, 
   ExternalLinkIcon, MenuIcon, XIcon, 
-  MoonIcon, SunIcon 
+  MoonIcon, SunIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon 
 } from 'lucide-react';
 
 const PROJECTS = [
-    {
-      title: "RPA Development Projects",
-      description: "Design, develop, and implement software robots using various RPA tools (UiPath, WinAuto, Automation Anywhere, Robocorp) to enhance business processes and improve operational efficiency.",
-      tags: ["RPA", "UiPath", "Automation Anywhere", "Robocorp"],
-      category: "fullstack",
-      githubLink: "#",
-      liveLink: "#"
-    },
-    {
-      title: "Web Development Portfolio",
-      description: "Consistently create well-designed, tested code using best practices for website development, including mobile and responsive site design. Integrate back-end databases and services.",
-      tags: ["HTML/CSS", "JavaScript", "Responsive Design", "Backend Integration"],
-      category: "ai",
-      githubLink: "#",
-      liveLink: "#"
-    },
-    {
-      title: "AI & NLP Solutions",
-      description: "Drive innovation by implementing latest AI research and enhancing products. Specializing in Python & NLP development with strong problem-solving capabilities.",
-      tags: ["Python", "NLP", "AI", "Machine Learning"],
-      category: "backend",
-      githubLink: "https://huggingface.co/juliuserictuliao",
-      liveLink: "#"
-    }
-  ];
-  
-  const SKILLS = [
-    { 
-      category: "AI",
-      items: ["Web3", "HTML/CSS", "JavaScript", "Responsive Design", "UI/UX"]
-    },
-    { 
-      category: "Backend",
-      items: ["Python", "SQL", "NLP", "AI Implementation", "Database Management"]
-    },
-    { 
-      category: "Tools",
-      items: ["UiPath", "Automation Anywhere", "Robocorp", "Visual Basic", "Git"]
-    }
-  ];
-  
-  const CATEGORIES = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'ai', label: 'AI' },
-    { id: 'fullstack', label: 'Full Stack' },
-    { id: 'backend', label: 'Backend' }
-  ];
-  
-  const SOCIAL_LINKS = [
-    { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
-    { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
-    { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
-  ];
+  {
+    title: "UiPath Automation Suite",
+    description: "Developed end-to-end automation solutions for invoice processing, reducing processing time by 75%. Implemented OCR and machine learning for document classification.",
+    tags: ["UiPath", "OCR", "ML", "Process Automation"],
+    category: "rpa",
+    githubLink: "#",
+    liveLink: "#",
+    images: [
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400"
+    ]
+  },
+  {
+    title: "Robocorp Healthcare Bot",
+    description: "Created an automated system for medical records processing, ensuring HIPAA compliance and 99.9% accuracy in data entry. Integrated with existing EMR systems.",
+    tags: ["Robocorp", "Healthcare", "Python", "API Integration"],
+    category: "rpa",
+    githubLink: "#",
+    liveLink: "#",
+    images: [
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400"
+    ]
+  },
+  {
+    title: "NLP Document Classifier",
+    description: "Built a machine learning model using BERT for automated document classification. Achieved 95% accuracy in categorizing legal documents.",
+    tags: ["Python", "NLP", "BERT", "Machine Learning"],
+    category: "ai",
+    githubLink: "https://huggingface.co/juliuserictuliao",
+    liveLink: "#",
+    images: [
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400"
+    ]
+  },
+  {
+    title: "Sentiment Analysis Dashboard",
+    description: "Developed a real-time sentiment analysis tool for social media monitoring. Processes over 10,000 tweets per hour with 92% accuracy.",
+    tags: ["Python", "React", "NLP", "Real-time Processing"],
+    category: "ai",
+    githubLink: "#",
+    liveLink: "#",
+    images: [
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400"
+    ]
+  },
+  {
+    title: "E-commerce Platform",
+    description: "Full-stack e-commerce solution with integrated payment processing, inventory management, and real-time analytics.",
+    tags: ["React", "Node.js", "MongoDB", "AWS"],
+    category: "fullstack",
+    githubLink: "#",
+    liveLink: "#",
+    images: [
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400",
+      "/api/placeholder/600/400"
+    ]
+  }
+];
+
+const SKILLS = [
+  {
+    category: "RPA Development",
+    items: ["UiPath", "Automation Anywhere", "Robocorp", "Process Design", "Business Analysis"]
+  },
+  {
+    category: "AI & Machine Learning",
+    items: ["Python", "NLP", "TensorFlow", "BERT", "Hugging Face"]
+  },
+  {
+    category: "Full Stack Development",
+    items: ["React", "Node.js", "MongoDB", "REST APIs", "AWS"]
+  },
+  {
+    category: "Tools & Technologies",
+    items: ["Git", "Docker", "CI/CD", "Agile", "JIRA"]
+  }
+];
+
+const CATEGORIES = [
+  { id: 'all', label: 'All Projects' },
+  { id: 'rpa', label: 'RPA' },
+  { id: 'ai', label: 'AI & ML' },
+  { id: 'fullstack', label: 'Full Stack' }
+];
+
+const SOCIAL_LINKS = [
+  { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
+  { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
+  { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
+];
+
+const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => (
+  <button
+    onClick={() => setIsDarkMode(!isDarkMode)}
+    className={`p-2 rounded-lg transition-colors ${
+      isDarkMode 
+        ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700' 
+        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+    }`}
+    aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+  >
+    {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+  </button>
+);
+
+const ImageCarousel = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  return (
+    <div className="relative overflow-hidden aspect-video group">
+      <img 
+        src={images[currentIndex]} 
+        alt={`Slide ${currentIndex + 1}`}
+        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+      />
+      
+      {images.length > 1 && (
+        <>
+          <button 
+            onClick={goToPrevious}
+            className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            aria-label="Previous image"
+          >
+            <ChevronLeftIcon size={20} />
+          </button>
+          <button 
+            onClick={goToNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            aria-label="Next image"
+          >
+            <ChevronRightIcon size={20} />
+          </button>
+          
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  currentIndex === index 
+                    ? 'bg-white' 
+                    : 'bg-white/50 hover:bg-white/75'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+const ProjectCard = ({ project }) => {
+  return (
+    <article className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+      <ImageCarousel images={project.images} />
+      <div className="p-6 space-y-4">
+        <h3 className="text-xl font-semibold dark:text-white">{project.title}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{project.description}</p>
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map((tag, tagIndex) => (
+            <span 
+              key={tagIndex}
+              className="px-3 py-1 text-sm bg-blue-50 dark:bg-gray-700 text-blue-700 dark:text-blue-300 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <a 
+            href={project.githubLink} 
+            className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
+            aria-label="View project on GitHub"
+          >
+            <GithubIcon size={20} />
+          </a>
+          <a 
+            href={project.liveLink} 
+            className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
+            aria-label="View live project"
+          >
+            <ExternalLinkIcon size={20} />
+          </a>
+        </div>
+      </div>
+    </article>
+  );
+};
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,23 +243,8 @@ const Portfolio = () => {
     localStorage.setItem('darkMode', isDarkMode);
   }, [isDarkMode]);
 
-  const ThemeToggle = () => (
-    <button
-      onClick={() => setIsDarkMode(!isDarkMode)}
-      className={`p-2 rounded-lg transition-colors ${
-        isDarkMode 
-          ? 'bg-gray-800 text-yellow-300 hover:bg-gray-700' 
-          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-      }`}
-      aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
-    >
-      {isDarkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
-    </button>
-  );
-
   if (isLoading) {
     return (
-        
       <div className="fixed inset-0 bg-white dark:bg-gray-900 flex items-center justify-center">
         <div className="space-y-4 text-center">
           <div className={`w-24 h-24 border-4 rounded-full animate-spin mx-auto ${
@@ -124,7 +266,7 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-             Julius Eric Tuliao
+              Julius Eric Tuliao
             </h1>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -137,11 +279,11 @@ const Portfolio = () => {
                   {item}
                 </a>
               ))}
-              <ThemeToggle />
+              <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
             </div>
 
             <div className="md:hidden flex items-center space-x-4">
-              <ThemeToggle />
+              <ThemeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -171,9 +313,7 @@ const Portfolio = () => {
         </div>
       </nav>
 
-      <main className={`min-h-screen w-full transition-colors duration-300 ${
-        isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-gray-50 to-blue-50'
-      } overflow-hidden`}>
+      <main className="min-h-screen w-full transition-colors duration-300">
         <section id="about" className="py-24">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center space-y-6">
@@ -208,7 +348,7 @@ const Portfolio = () => {
 
         <section id="projects" className="py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-600  dark:text-white ">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-600 dark:text-white">
               Featured Projects
             </h2>
             
@@ -231,41 +371,7 @@ const Portfolio = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project, index) => (
-                <article 
-                  key={index}
-                  className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
-                >
-                  <div className="p-6 space-y-4">
-                    <h3 className="text-xl font-semibold dark:text-white">{project.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, tagIndex) => (
-                        <span 
-                          key={tagIndex}
-                          className="px-3 py-1 text-sm bg-blue-50 dark:bg-gray-700 text-blue-700 dark:text-blue-300 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <a 
-                        href={project.githubLink} 
-                        className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
-                        aria-label="View project on GitHub"
-                      >
-                        <GithubIcon size={20} />
-                      </a>
-                      <a 
-                        href={project.liveLink} 
-                        className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
-                        aria-label="View live project"
-                      >
-                        <ExternalLinkIcon size={20} />
-                      </a>
-                    </div>
-                  </div>
-                </article>
+                <ProjectCard key={index} project={project} />
               ))}
             </div>
           </div>
@@ -276,7 +382,7 @@ const Portfolio = () => {
             <h2 className="text-3xl font-bold mb-12 text-center dark:text-white">
               Technical Arsenal
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {SKILLS.map((skillGroup, index) => (
                 <div 
                   key={index}
@@ -285,7 +391,7 @@ const Portfolio = () => {
                   <h3 className="text-lg font-semibold mb-4 text-blue-600 dark:text-blue-400">
                     {skillGroup.category}
                   </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-3">
                     {skillGroup.items.map((skill, skillIndex) => (
                       <div 
                         key={skillIndex}
@@ -304,15 +410,15 @@ const Portfolio = () => {
 
         <section id="contact" className="py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden w-[calc(100%-2rem)]">
+            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
               <div className="px-8 py-12 text-center">
-                <h2 className="text-3xl font-bold mb-4 text-gray-600  dark:text-white">Let's Connect</h2>
+                <h2 className="text-3xl font-bold mb-4 text-gray-600 dark:text-white">Let's Connect</h2>
                 <p className="text-gray-600 dark:text-gray-300 mb-8">
                   Have a project in mind? Let's turn your vision into reality.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <a 
-                    href="mailto:john.doe@example.com" 
+                    href="mailto:juliuserictuliao@gmail.com" 
                     className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
                     aria-label="Send email"
                   >
@@ -320,7 +426,7 @@ const Portfolio = () => {
                     <span>Send Email</span>
                   </a>
                   <a 
-                    href="https://linkedin.com/in/johndoe"
+                    href="https://www.linkedin.com/in/juliustuliao"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex items-center justify-center space-x-2 px-6 py-3 rounded-full transition-colors ${
