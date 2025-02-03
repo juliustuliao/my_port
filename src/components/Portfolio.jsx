@@ -6,74 +6,186 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon 
 } from 'lucide-react';
-const PROJECTS = [
+const CATEGORIES = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'ai', label: 'AI & ML' },
+    { id: 'data', label: 'Data Engineering' },
+    { id: 'automation', label: 'Automation' },
+    { id: 'fullstack', label: 'Full Stack' }
+  ];
+  
+  const SKILLS = [
     {
-      title: "DIX Gas Sales Encoding Automation",
-      description: "Developed a UiPath automation solution for processing LPG gas sales data, handling over 300,000 kg of sales (50,000+ rows) monthly. Eliminated manual encoding needs, significantly reducing operational costs and human error while improving processing efficiency.",
-      tags: ["UiPath", "Data Processing", "Legacy System Integration", "Process Automation"],
-      category: "rpa",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      category: "AI & Machine Learning",
+      items: [
+        "Natural Language Processing",
+        "Speech Recognition (ASR)",
+        "Computer Vision",
+        "Large Language Models",
+        "TensorFlow/PyTorch",
+        "Model Fine-tuning",
+        "Machine Learning Ops",
+        "Neural Networks"
+      ]
     },
     {
-      title: "Intelligent Email Management System",
-      description: "Built an automated email processing system using Lark AnyX and in-house LLM for smart email classification and response. Implemented priority-based routing and automated response generation, streamlining group email management and improving response efficiency.",
-      tags: ["Lark", "LLM Integration", "Email Automation", "NLP", "Process Automation"],
-      category: "rpa",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      category: "Data Engineering",
+      items: [
+        "Data Warehousing",
+        "ETL Pipeline Design",
+        "SQL (PostgreSQL, MySQL)",
+        "NoSQL (Redis)",
+        "AWS (RDS, EC2, ECS)",
+        "Data Modeling",
+        "API Development",
+        "Real-time Processing"
+      ]
     },
     {
-      title: "AssessMate - Automated Call Center Hiring Solution",
-      description: "Developed an end-to-end hiring automation system processing 20,000 applications monthly. Features custom ASR API, speech fluency assessment models, and automated candidate evaluation, delivering results within 5 minutes of application submission.",
-      tags: ["ASR", "Machine Learning", "API Development", "Speech Processing"],
+      category: "Development",
+      items: [
+        "Python",
+        "Node.js",
+        "React",
+        "Web3/Blockchain",
+        "REST APIs",
+        "Flask",
+        "Docker",
+        "Git/CI/CD"
+      ]
+    },
+    {
+      category: "Automation & Tools",
+      items: [
+        "UiPath",
+        "Winautomation",
+        "Robocorp",
+        "VBA",
+        "Process Design",
+        "Bubble.io",
+        "Agile/Scrum",
+        "Business Analysis"
+      ]
+    },
+    {
+      category: "Analytics & Visualization",
+      items: [
+        "Tableau",
+        "Google Looker Studio",
+        "Business Intelligence",
+        "GIS/Mapping",
+        "Statistical Analysis",
+        "KPI Dashboards",
+        "Advanced Excel",
+        "Data Storytelling"
+      ]
+    }
+  ];
+  
+  const PROJECTS = [
+    {
+      title: "AI Call Center Quality Assurance",
+      description: "Engineered an AI-powered QA system analyzing 90,000+ monthly calls. Automated violation detection, opportunity identification, and conversation quality scoring using advanced NLP and speech processing.",
+      tags: ["NLP", "Speech Processing", "Machine Learning", "Quality Analytics"],
       category: "ai",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "QA AI - Call Center Quality Assurance",
-      description: "Built an AI-powered QA system analyzing 90,000 calls monthly for violations, missed opportunities, and conversation quality. Automates the entire QA process for call center recordings with comprehensive grading and analysis.",
-      tags: ["NLP", "Audio Processing", "Machine Learning", "Quality Assurance"],
+      title: "AssessMate - AI Hiring Platform",
+      description: "Built an end-to-end AI recruitment platform processing 20,000 applications monthly. Features custom ASR API, fluency assessment models, and automated evaluation, reducing hiring time from days to 5 minutes.",
+      tags: ["ASR", "Machine Learning", "API Development", "Process Automation"],
       category: "ai",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "Tagalog ASR Engine",
-      description: "Fine-tuned Whisper model on 36,000+ minutes of Tagalog voice recordings using LoRA. Deployed on AWS ECS/EC2 using Flask, serving as foundation for multiple speech-to-text applications.",
-      tags: ["ASR", "Fine-tuning", "AWS", "Flask", "Docker"],
+      title: "Address Intelligence Engine",
+      description: "Developed ML model achieving 85% accuracy in parsing unstructured addresses. Trained on 100K+ geocoding results from Google Maps and HERE APIs, enabling automated location intelligence.",
+      tags: ["Machine Learning", "NLP", "Geocoding", "API Integration"],
       category: "ai",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "Crypto Trading Advisor",
-      description: "Developed a Web3 AI platform utilizing DeepSeek/OpenAI LLMs for cryptocurrency analysis and trading recommendations. Integrated multiple data sources (CoinGecko, CryptoCompare, Etherscan) for comprehensive market analysis.",
-      tags: ["Web3", "LLM", "API Integration", "Cryptocurrency", "Python"],
+      title: "Enterprise Data Warehouse",
+      description: "Architected company's core data infrastructure using AWS RDS and EC2. Built Flask REST API enabling seamless data access and analytics integration, establishing foundation for data-driven operations.",
+      tags: ["AWS", "Data Warehouse", "API Development", "Database Design"],
+      category: "data",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Route Optimization System",
+      description: "Created advanced routing engine optimizing 10,000+ destinations daily. Increased field productivity by 66% through intelligent route planning, improving from 15 to 25 daily account visits.",
+      tags: ["Algorithms", "Optimization", "GIS", "Data Science"],
+      category: "data",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Analytics Dashboard Suite",
+      description: "Designed enterprise-wide analytics platform using Tableau and Looker Studio. Created interactive visualizations for email, SMS, and field operations, enabling data-driven decision making.",
+      tags: ["Tableau", "Looker", "Data Visualization", "Analytics"],
+      category: "data",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Automated Gas Sales Processing",
+      description: "Developed UiPath automation handling 300,000 kg monthly LPG sales data (50,000+ rows). Eliminated manual encoding needs while ensuring 100% accuracy in legacy system integration.",
+      tags: ["UiPath", "Process Automation", "Data Processing", "RPA"],
+      category: "automation",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Smart Email Management System",
+      description: "Engineered automated email processing using Lark AnyX and LLM. Implemented intelligent classification and response generation, streamlining group email management with priority-based routing.",
+      tags: ["Email Automation", "LLM", "Workflow Automation", "NLP"],
+      category: "automation",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "Banking Reports Automation",
+      description: "Created VBA solutions automating complex financial reporting. Eliminated manual processes in data consolidation, formula application, and report generation, significantly reducing processing time.",
+      tags: ["VBA", "Financial Automation", "Excel", "Report Generation"],
+      category: "automation",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+    },
+    {
+      title: "High-Scale Betting Platform",
+      description: "Engineered betting platform processing 5M+ monthly transactions using Node.js, PostgreSQL, and Redis. Features automated receipt generation, dynamic odds adjustment, and real-time management.",
+      tags: ["Node.js", "PostgreSQL", "Redis", "High-Scale Systems"],
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "High-Volume Betting Platform",
-      description: "Built a scalable betting application processing 5M+ bets monthly using Node.js, PostgreSQL, and Redis. Features automated receipt generation, dynamic odds adjustment, and real-time bet management. Deployed across multiple betting arenas.",
-      tags: ["Node.js", "PostgreSQL", "Redis", "High-Scale"],
+      title: "Web3 Trading Assistant",
+      description: "Built crypto analysis platform using DeepSeek/OpenAI LLMs. Integrated multiple data sources (CoinGecko, CryptoCompare, Etherscan) for comprehensive market intelligence and trading recommendations.",
+      tags: ["Web3", "LLM", "API Integration", "Trading Systems"],
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "Smart Contract Development Suite",
-      description: "Designed and deployed various smart contracts for betting applications and asset tokenization. Implemented secure, efficient contract logic for multiple client requirements on blockchain platforms.",
-      tags: ["Solidity", "Web3", "Smart Contracts", "Blockchain"],
+      title: "Smart Contract Suite",
+      description: "Developed and deployed blockchain smart contracts for betting and asset tokenization. Implemented secure, efficient contract logic enabling automated financial operations on blockchain platforms.",
+      tags: ["Solidity", "Web3", "Smart Contracts", "DeFi"],
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
@@ -81,97 +193,22 @@ const PROJECTS = [
     },
     {
       title: "Enterprise CRM System",
-      description: "Developed a comprehensive CRM system for internal and external employee management. Features real-time synchronization between field and office data, automated status updates, and robust database integration.",
-      tags: ["React", "Node.js", "PostgreSQL", "Real-time Sync"],
+      description: "Built comprehensive CRM enabling real-time field and office data synchronization. Features automated status updates, robust database integration, and streamlined workflow management.",
+      tags: ["React", "Node.js", "PostgreSQL", "Real-time Systems"],
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     },
     {
-      title: "Delivery Status Chatbot",
-      description: "Created an automated response system handling 100K+ monthly rider inquiries. Integrated REST APIs to sync local and cloud databases for real-time parcel status updates and automated communications.",
-      tags: ["API Development", "Database Integration", "Chatbot", "Real-time Updates"],
+      title: "Coffee Shop Management System",
+      description: "Developed full-featured POS and management system using Bubble.io. Includes order processing, customer history tracking, automated email receipts, and comprehensive business reporting.",
+      tags: ["Bubble.io", "No-Code", "POS", "Business Systems"],
       category: "fullstack",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Enterprise Data Warehouse Infrastructure",
-      description: "Architected and implemented company's initial data warehouse using AWS RDS and EC2. Developed Flask-based REST API for data access, enabling seamless integration with business intelligence tools and establishing foundation for data-driven decision making.",
-      tags: ["AWS", "RDS", "Flask", "API Development", "Data Warehouse", "EC2"],
-      category: "fullstack",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Route Optimization Engine",
-      description: "Developed an advanced route optimization system processing 10,000+ possible destinations. Increased field productivity by 66% (from 15 to 25 daily account visits) through intelligent route planning and optimization algorithms.",
-      tags: ["Python", "Optimization", "Algorithms", "Data Science"],
-      category: "ai",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Address Intelligence ML Model",
-      description: "Created machine learning model for city and province detection from unstructured addresses. Trained on 100K geocoding results from Google Maps and HERE APIs, achieving 85% accuracy in address component classification.",
-      tags: ["Machine Learning", "NLP", "Google Maps API", "HERE API", "Python"],
-      category: "ai",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Enterprise Analytics Dashboard Suite",
-      description: "Designed comprehensive visualization dashboards using Tableau and Google Looker Studio for email, SMS, and field operations data. Created interactive maps and KPI tracking systems for business intelligence.",
-      tags: ["Tableau", "Google Looker", "Data Visualization", "BI", "Analytics"],
-      category: "fullstack",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Banking Reports Automation",
-      description: "Developed VBA applications to automate complex banking report generation. Eliminated manual copy-paste operations, automated formula applications, and streamlined file creation processes.",
-      tags: ["VBA", "Excel", "Process Automation", "Financial Reports"],
-      category: "rpa",
       githubLink: "#",
       liveLink: "#",
       images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
     }
-  ];
-  
-  const SKILLS = [
-    {
-      category: "RPA Development",
-      items: ["UiPath", "Winautomation", "Robocorp", "Process Design", "Business Analysis", "VBA", "Excel Automation"]
-    },
-    {
-      category: "AI & Machine Learning",
-      items: ["Python", "NLP", "TensorFlow", "Computer Vision", "LLM", "ASR", "Modelling", "Finetuning", "Route Optimization", "Geocoding ML"]
-    },
-    {
-      category: "Full Stack Development",
-      items: ["Python", "Node.js", "PostgreSQL", "REST APIs", "Webhook", "AWS", "Alibaba", "MySQL", "SQLite", "Excel", "Web3", "Bubble.io"]
-    },
-    {
-      category: "Data & Analytics",
-      items: ["Tableau", "Google Looker Studio", "Data Warehousing", "ETL", "Data Modeling", "Business Intelligence", "GIS"]
-    },
-    {
-      category: "Tools & Technologies",
-      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis", "Google Maps API", "HERE API", "No-Code Platforms"]
-    }
-  ];
-  
-  const CATEGORIES = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'rpa', label: 'RPA' },
-    { id: 'ai', label: 'AI & ML' },
-    { id: 'fullstack', label: 'Full Stack' }
   ];
   
   const SOCIAL_LINKS = [
