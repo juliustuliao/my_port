@@ -155,7 +155,7 @@ const PROJECTS = [
     },
     {
       category: "Full Stack Development",
-      items: ["Python", "Node.js", "PostgreSQL", "REST APIs", "Webhook", "AWS", "Alibaba", "MySQL", "SQLite", "Excel", "Web3"]
+      items: ["Python", "Node.js", "PostgreSQL", "REST APIs", "Webhook", "AWS", "Alibaba", "MySQL", "SQLite", "Excel", "Web3", "Bubble.io"]
     },
     {
       category: "Data & Analytics",
@@ -163,7 +163,7 @@ const PROJECTS = [
     },
     {
       category: "Tools & Technologies",
-      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis", "Google Maps API", "HERE API"]
+      items: ["Git", "Docker", "CI/CD", "Agile", "K6", "Redis", "Google Maps API", "HERE API", "No-Code Platforms"]
     }
   ];
   
