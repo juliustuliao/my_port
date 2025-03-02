@@ -35,7 +35,7 @@ const CATEGORIES = [
         "ETL Pipeline Design",
         "SQL (PostgreSQL, MySQL)",
         "NoSQL (Redis)",
-        "AWS (RDS, EC2, ECS)",
+        "CLOUD (RDS, EC2, ECS)",
         "Data Modeling",
         "API Development",
         "Real-time Processing"
