@@ -103,7 +103,7 @@ const CATEGORIES = [
     },
     {
       title: "ALPR System",
-      description: "Implemented computer vision solution using fine-tuned YOLOv8 for automated license plate and conduction sticker detection. Custom-trained on 5 specialized datasets for optimal accuracy in local conditions.",
+      description: "led the development of computer vision solution using fine-tuned YOLOv8 for automated license plate and conduction sticker detection. Custom-trained on 5 specialized datasets for optimal accuracy in local conditions.",
       tags: ["Computer Vision", "YOLOv8", "Object Detection", "Fine-tuning"],
       category: "ai",
       githubLink: "#",
@@ -112,7 +112,7 @@ const CATEGORIES = [
     },
     {
       title: "RAG-Based Customer Support AI",
-      description: "Built conversational AI system handling 40K+ messages monthly, resolving 80% of Level 1 inquiries. Utilized LlamaIndex, vector DB, Docker, Redis, and VLLM with intelligent human escalation protocols.",
+      description: "Led the development of conversational AI system handling 40K+ messages monthly, resolving 80% of Level 1 inquiries. Utilized LlamaIndex, vector DB, Docker, Redis, and VLLM with intelligent human escalation protocols.",
       tags: ["RAG", "LlamaIndex", "Vector DB", "VLLM", "Redis", "Docker"],
       category: "ai",
       githubLink: "#",
@@ -130,7 +130,7 @@ const CATEGORIES = [
     },
     {
       title: "AI Call Center Quality Assurance",
-      description: "Engineered an AI-powered QA system analyzing 90,000+ monthly calls. Automated violation detection, opportunity identification, and conversation quality scoring using advanced NLP and speech processing.",
+      description: "Initiated and led the development of an AI-powered QA system analyzing 90,000+ monthly calls. Designed and implemented automated violation detection, opportunity identification, and conversation quality scoring using advanced NLP and speech processing.",
       tags: ["NLP", "Speech Processing", "Machine Learning", "Quality Analytics"],
       category: "ai",
       githubLink: "#",
@@ -139,7 +139,7 @@ const CATEGORIES = [
     },
     {
       title: "AssessMate - AI Hiring Platform",
-      description: "Built an AI voice grading platform processing 20,000 applications monthly. Features custom ASR API, fluency assessment models, and automated evaluation, reducing hiring time from days to 5 minutes.",
+      description: "Led a team of developers in building an AI voice grading platform processing 20,000 applications monthly. Designed and implemented a custom ASR API, fluency assessment models, and automated evaluation system, reducing hiring time from days to just 5 minutes.",
       tags: ["ASR", "Machine Learning", "API Development", "Process Automation"],
       category: "ai",
       githubLink: "#",
@@ -157,7 +157,7 @@ const CATEGORIES = [
     },
     {
       title: "Enterprise Data Warehouse",
-      description: "Architected company's core data infrastructure using AWS RDS and EC2. Built Flask REST API enabling seamless data access and analytics integration, establishing foundation for data-driven operations.",
+      description: "Led the team in developing the company's core data infrastructure using AWS RDS and EC2. Oversaw the design and implementation of a Flask REST API, enabling seamless data access and analytics integration to drive data-driven operations.",
       tags: ["AWS", "Data Warehouse", "API Development", "Database Design"],
       category: "data",
       githubLink: "#",
