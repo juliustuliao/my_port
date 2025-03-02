@@ -85,12 +85,12 @@ const CATEGORIES = [
   const PROJECTS = [
     {
       title: "Tagalog ASR Engine",
-      description: "Fine-tuned Whisper model on 36,000+ minutes of Tagalog voice recordings using LoRA. Deployed on AWS ECS/EC2 using Flask, achieving high accuracy in Tagalog speech recognition. Built foundation for multiple speech-to-text applications.",
+      description: "Lead team of developers in Fine-tuning Whisper model on 36,000+ minutes of Tagalog voice recordings using LoRA. Deployed on AWS ECS/EC2 using Flask, achieving high accuracy in Tagalog speech recognition. Built foundation for multiple speech-to-text applications.",
       tags: ["ASR", "Fine-tuning", "LoRA", "AWS", "Flask", "Docker"],
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/asr1.png"]
     },
     {
       title: "AI Research Assistant",
@@ -99,7 +99,7 @@ const CATEGORIES = [
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/browser1.gif"]
     },
     {
       title: "ALPR System",
@@ -108,7 +108,7 @@ const CATEGORIES = [
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/alpr1.jpg"]
     },
     {
       title: "RAG-Based Customer Support AI",
@@ -117,7 +117,7 @@ const CATEGORIES = [
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/chat1.png","/images/chat2.png"]
     },
     {
       title: "Delivery Status Chatbot",
@@ -126,7 +126,7 @@ const CATEGORIES = [
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/delivery1.gif"]
     },
     {
       title: "AI Call Center Quality Assurance",
@@ -135,16 +135,16 @@ const CATEGORIES = [
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/qa1.png"]
     },
     {
       title: "AssessMate - AI Hiring Platform",
-      description: "Built an end-to-end AI recruitment platform processing 20,000 applications monthly. Features custom ASR API, fluency assessment models, and automated evaluation, reducing hiring time from days to 5 minutes.",
+      description: "Built an AI voice grading platform processing 20,000 applications monthly. Features custom ASR API, fluency assessment models, and automated evaluation, reducing hiring time from days to 5 minutes.",
       tags: ["ASR", "Machine Learning", "API Development", "Process Automation"],
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/assessmate1.png"]
     },
     {
       title: "Address Intelligence Engine",
@@ -153,7 +153,7 @@ const CATEGORIES = [
       category: "ai",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/geocode1.png"]
     },
     {
       title: "Enterprise Data Warehouse",
@@ -162,7 +162,7 @@ const CATEGORIES = [
       category: "data",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/datawarehouse0.png","/images/datawarehouse1.png", "/images/datawarehouse2.png"]
     },
     {
       title: "Route Optimization System",
@@ -171,7 +171,7 @@ const CATEGORIES = [
       category: "data",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/route1.jpeg"]
     },
     {
       title: "Analytics Dashboard Suite",
@@ -180,7 +180,7 @@ const CATEGORIES = [
       category: "data",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/dashboard1.png", "/images/dashboard2.png"]
     },
     {
       title: "Automated Gas Sales Processing",
@@ -189,7 +189,7 @@ const CATEGORIES = [
       category: "automation",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/rpa.png"]
     },
     {
       title: "Smart Email Management System",
@@ -198,7 +198,7 @@ const CATEGORIES = [
       category: "automation",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/email1.png", "/images/email2.png","/images/email3.png"]
     },
     {
       title: "Banking Reports Automation",
@@ -207,7 +207,7 @@ const CATEGORIES = [
       category: "automation",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/vba.jpg"]
     },
     {
       title: "High-Scale Betting Platform",
@@ -216,16 +216,7 @@ const CATEGORIES = [
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Web3 Trading Assistant",
-      description: "Built crypto analysis platform using DeepSeek/OpenAI LLMs. Integrated multiple data sources (CoinGecko, CryptoCompare, Etherscan) for comprehensive market intelligence and trading recommendations.",
-      tags: ["Web3", "LLM", "API Integration", "Trading Systems"],
-      category: "fullstack",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/betting1.gif"]
     },
     {
       title: "Smart Contract Suite",
@@ -234,16 +225,7 @@ const CATEGORIES = [
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
-    },
-    {
-      title: "Enterprise CRM System",
-      description: "Built comprehensive CRM enabling real-time field and office data synchronization. Features automated status updates, robust database integration, and streamlined workflow management.",
-      tags: ["React", "Node.js", "PostgreSQL", "Real-time Systems"],
-      category: "fullstack",
-      githubLink: "#",
-      liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/sc1.gif"]
     },
     {
       title: "Coffee Shop Management System",
@@ -252,7 +234,7 @@ const CATEGORIES = [
       category: "fullstack",
       githubLink: "#",
       liveLink: "#",
-      images: ["/api/placeholder/600/400", "/api/placeholder/600/400"]
+      images: ["/images/coffee1.png"]
     }
   ];
   
@@ -352,22 +334,7 @@ const ProjectCard = ({ project }) => {
             </span>
           ))}
         </div>
-        <div className="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <a 
-            href={project.githubLink} 
-            className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
-            aria-label="View project on GitHub"
-          >
-            <GithubIcon size={20} />
-          </a>
-          <a 
-            href={project.liveLink} 
-            className="text-gray-600 dark:text-gray-300 hover:text-blue-600"
-            aria-label="View live project"
-          >
-            <ExternalLinkIcon size={20} />
-          </a>
-        </div>
+        
       </div>
     </article>
   );
