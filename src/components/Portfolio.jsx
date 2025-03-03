@@ -180,7 +180,7 @@ const CATEGORIES = [
       category: "data",
       githubLink: "#",
       liveLink: "#",
-      images: ["/images/dashboard1.png", "/images/dashboard2.png","/images/dashboard3.jpg"]
+      images: ["/images/dashboard1.png", "/images/dashboard2.png","/images/dashboard3.jpeg"]
     },
     {
       title: "Automated Gas Sales Processing",
