@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import * as webllm from '@mlc-ai/web-llm';
 import { 
   GithubIcon, LinkedinIcon, MailIcon, 
   ExternalLinkIcon, MenuIcon, XIcon, 
@@ -351,7 +352,7 @@ const ProjectCard = ({ project }) => {
           {project.tags.map((tag, tagIndex) => (
             <span 
               key={tagIndex}
-              className="px-3 py-1 text-sm bg-blue-50 dark:bg-gray-700 text-blue-700 dark:text-blue-300 rounded-full"
+              className="px-3 py-1 text-sm bg-green-50 dark:bg-gray-700 text-green-700 dark:text-green-300 rounded-full"
             >
               {tag}
             </span>
@@ -368,15 +369,72 @@ const AIChatbot = ({ isDarkMode }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hi! I'm Julius's AI assistant. Ask me anything about his projects, skills, or experience!",
+      text: "Hi! I'm Julius's AI assistant powered by WebLLM. Ask me anything about his projects, skills, or experience!",
       sender: 'bot',
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isModelLoading, setIsModelLoading] = useState(false);
+  const [isModelReady, setIsModelReady] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState('');
+  const engineRef = useRef(null);
+  const conversationHistory = useRef([
+    {
+      role: "system",
+      content: `You are Julius Eric Tuliao's AI assistant. You are knowledgeable about his work and experience. Here's information about Julius:
 
-  const generateResponse = (userMessage) => {
+PROJECTS:
+${PROJECTS.map(p => `- ${p.title}: ${p.description} (Technologies: ${p.tags.join(', ')}, Category: ${p.category})`).join('\n')}
+
+SKILLS:
+${SKILLS.map(skill => `${skill.category}: ${skill.items.join(', ')}`).join('\n')}
+
+CONTACT:
+- Email: juliuserictuliao@gmail.com
+- LinkedIn: https://www.linkedin.com/in/juliustuliao  
+- HuggingFace: https://huggingface.co/juliuserictuliao
+
+Please provide helpful, accurate responses about Julius's work. Be conversational and professional.`
+    }
+  ]);
+
+  const initializeWebLLM = async () => {
+    if (isModelReady || isModelLoading) return;
+    
+    setIsModelLoading(true);
+    setLoadingProgress('Initializing WebLLM...');
+
+    try {
+      if (!engineRef.current) {
+        engineRef.current = new webllm.MLCEngine();
+        engineRef.current.setInitProgressCallback((report) => {
+          setLoadingProgress(report.text);
+        });
+      }
+
+      const config = {
+        temperature: 0.7,
+        top_p: 0.9,
+      };
+
+      // Use a lightweight model for better performance
+      await engineRef.current.reload("TinyLlama-1.1B-Chat-v0.4-q4f32_1-MLC-1k", config);
+      
+      setIsModelReady(true);
+      setLoadingProgress('Model ready!');
+      setTimeout(() => setLoadingProgress(''), 2000);
+    } catch (error) {
+      console.error('Failed to initialize WebLLM:', error);
+      setLoadingProgress('Failed to load model. Using fallback responses.');
+      setTimeout(() => setLoadingProgress(''), 3000);
+    } finally {
+      setIsModelLoading(false);
+    }
+  };
+
+  const generateFallbackResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
     
     // Search for relevant projects
@@ -387,14 +445,6 @@ const AIChatbot = ({ isDarkMode }) => {
       project.category.toLowerCase().includes(message)
     );
 
-    // Skill-based responses
-    const skillCategories = SKILLS.map(skill => skill.category.toLowerCase());
-    const matchingSkill = SKILLS.find(skill => 
-      skill.category.toLowerCase().includes(message) ||
-      skill.items.some(item => item.toLowerCase().includes(message))
-    );
-
-    // General questions
     if (message.includes('hello') || message.includes('hi')) {
       return "Hello! I'm here to help you learn more about Julius's work. You can ask me about his AI projects, data engineering experience, automation work, or any specific technologies.";
     }
@@ -403,42 +453,15 @@ const AIChatbot = ({ isDarkMode }) => {
       return "You can reach Julius at juliuserictuliao@gmail.com or connect with him on LinkedIn at https://www.linkedin.com/in/juliustuliao. He's also active on HuggingFace at https://huggingface.co/juliuserictuliao";
     }
 
-    if (message.includes('experience') || message.includes('background')) {
-      return "Julius is a full-stack developer specializing in AI/ML, data engineering, and automation. He has led teams in developing enterprise-scale solutions including ASR systems, RAG-based chatbots, and high-throughput platforms processing millions of transactions.";
-    }
-
-    // Project-specific responses
     if (relevantProjects.length > 0) {
       const project = relevantProjects[0];
-      return `Great question about ${project.title}! ${project.description} This project uses technologies like ${project.tags.join(', ')}. Would you like to know more about any specific aspect?`;
+      return `Great question about ${project.title}! ${project.description} This project uses technologies like ${project.tags.join(', ')}.`;
     }
 
-    // Skill-specific responses
-    if (matchingSkill) {
-      return `Julius has extensive experience in ${matchingSkill.category}. His skills include: ${matchingSkill.items.join(', ')}. He's worked on multiple projects utilizing these technologies.`;
-    }
-
-    // Category-based responses
-    if (message.includes('ai') || message.includes('machine learning') || message.includes('ml')) {
-      const aiProjects = PROJECTS.filter(p => p.category === 'ai');
-      return `Julius has worked on ${aiProjects.length} major AI/ML projects including ASR engines, computer vision systems, RAG-based chatbots, and LLM applications. Notable ones include the Tagalog ASR Engine and AI Research Assistant.`;
-    }
-
-    if (message.includes('data') || message.includes('engineering')) {
-      const dataProjects = PROJECTS.filter(p => p.category === 'data');
-      return `In data engineering, Julius has built ${dataProjects.length} major systems including enterprise data warehouses, route optimization systems, and analytics dashboards processing millions of records daily.`;
-    }
-
-    if (message.includes('automation') || message.includes('rpa')) {
-      const autoProjects = PROJECTS.filter(p => p.category === 'automation');
-      return `Julius has developed ${autoProjects.length} automation solutions including RPA bots processing 300K+ kg of sales data monthly and smart email management systems using LLMs.`;
-    }
-
-    // Default response
-    return "I'd be happy to help! You can ask me about Julius's AI/ML projects, data engineering work, automation solutions, or any specific technologies like ASR, computer vision, or web development.";
+    return "I'd be happy to help! You can ask me about Julius's AI/ML projects, data engineering work, automation solutions, or any specific technologies.";
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
     const userMessage = {
@@ -449,19 +472,84 @@ const AIChatbot = ({ isDarkMode }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputMessage;
     setInputMessage('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const botResponse = {
+    // Add user message to conversation history
+    conversationHistory.current.push({
+      role: "user",
+      content: currentInput
+    });
+
+    try {
+      let responseText = '';
+      
+      if (isModelReady && engineRef.current) {
+        // Use WebLLM for response
+        const completion = await engineRef.current.chat.completions.create({
+          messages: conversationHistory.current,
+          stream: true,
+        });
+
+        let currentResponse = '';
+        const botMessage = {
+          id: Date.now() + 1,
+          text: '',
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+
+        for await (const chunk of completion) {
+          const delta = chunk.choices[0]?.delta?.content;
+          if (delta) {
+            currentResponse += delta;
+            setMessages(prev => prev.map(msg => 
+              msg.id === botMessage.id 
+                ? { ...msg, text: currentResponse }
+                : msg
+            ));
+          }
+        }
+        responseText = currentResponse;
+      } else {
+        // Fallback to rule-based responses
+        responseText = generateFallbackResponse(currentInput);
+        
+        setTimeout(() => {
+          const botResponse = {
+            id: Date.now() + 1,
+            text: responseText,
+            sender: 'bot',
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, botResponse]);
+          setIsTyping(false);
+        }, 1000);
+      }
+
+      // Add bot response to conversation history
+      if (responseText) {
+        conversationHistory.current.push({
+          role: "assistant", 
+          content: responseText
+        });
+      }
+
+    } catch (error) {
+      console.error('Error generating response:', error);
+      const fallbackResponse = {
         id: Date.now() + 1,
-        text: generateResponse(inputMessage),
+        text: generateFallbackResponse(currentInput),
         sender: 'bot',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, botResponse]);
+      setMessages(prev => [...prev, fallbackResponse]);
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -470,6 +558,13 @@ const AIChatbot = ({ isDarkMode }) => {
       handleSendMessage();
     }
   };
+
+  // Initialize WebLLM when chatbot opens
+  useEffect(() => {
+    if (isOpen && !isModelReady && !isModelLoading) {
+      initializeWebLLM();
+    }
+  }, [isOpen, isModelReady, isModelLoading]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -485,10 +580,25 @@ const AIChatbot = ({ isDarkMode }) => {
             isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'
           } flex items-center justify-between`}>
             <div className="flex items-center space-x-2">
-              <BotIcon size={20} className="text-blue-500" />
-              <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                Julius's AI Assistant
-              </span>
+              <div className="relative">
+                <BotIcon size={20} className={`text-green-500 ${isModelLoading ? 'animate-pulse' : ''}`} />
+                {isModelReady && (
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                )}
+              </div>
+              <div>
+                <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                  Julius's AI Assistant
+                </span>
+                {isModelLoading && (
+                  <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    Loading AI model...
+                  </div>
+                )}
+                {isModelReady && (
+                  <div className="text-xs text-green-600">WebLLM Ready</div>
+                )}
+              </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -499,6 +609,15 @@ const AIChatbot = ({ isDarkMode }) => {
               <XIcon size={16} />
             </button>
           </div>
+
+          {/* Loading Progress */}
+          {loadingProgress && (
+            <div className={`px-4 py-2 border-b text-xs ${
+              isDarkMode ? 'border-gray-700 bg-gray-800 text-gray-300' : 'border-gray-200 bg-blue-50 text-gray-700'
+            }`}>
+              {loadingProgress}
+            </div>
+          )}
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
@@ -512,7 +631,7 @@ const AIChatbot = ({ isDarkMode }) => {
                 }`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     message.sender === 'user' 
-                      ? 'bg-blue-500' 
+                      ? 'bg-green-500' 
                       : isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
                   }`}>
                     {message.sender === 'user' ? (
@@ -523,7 +642,7 @@ const AIChatbot = ({ isDarkMode }) => {
                   </div>
                   <div className={`px-3 py-2 rounded-lg ${
                     message.sender === 'user'
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-green-500 text-white'
                       : isDarkMode 
                         ? 'bg-gray-700 text-gray-200' 
                         : 'bg-gray-100 text-gray-800'
@@ -566,17 +685,18 @@ const AIChatbot = ({ isDarkMode }) => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about Julius's projects..."
+                placeholder={isModelLoading ? "Loading AI model..." : "Ask about Julius's projects..."}
+                disabled={isModelLoading}
                 className={`flex-1 px-3 py-2 rounded-lg border text-sm ${
                   isDarkMode 
                     ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-white border-gray-300 text-gray-800 placeholder-gray-500'
-                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                } focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50`}
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!inputMessage.trim()}
-                className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!inputMessage.trim() || isModelLoading}
+                className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <SendIcon size={16} />
               </button>
@@ -588,7 +708,7 @@ const AIChatbot = ({ isDarkMode }) => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+        className="w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
       >
         <MessageCircleIcon size={24} />
       </button>
@@ -628,8 +748,8 @@ const Portfolio = () => {
         <div className="space-y-4 text-center">
           <div className={`w-24 h-24 border-4 rounded-full animate-spin mx-auto ${
             isDarkMode 
-              ? 'border-purple-500 border-t-transparent' 
-              : 'border-blue-600 border-t-transparent'
+              ? 'border-emerald-500 border-t-transparent' 
+              : 'border-green-600 border-t-transparent'
           }`} />
           <p className="text-lg font-medium text-gray-600 dark:text-gray-300">
             Loading Portfolio...
@@ -644,7 +764,7 @@ const Portfolio = () => {
       <nav className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               Julius Eric Tuliao
             </h1>
             
@@ -653,7 +773,7 @@ const Portfolio = () => {
                 <a 
                   key={item}
                   href={`#${item.toLowerCase()}`} 
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors duration-300"
+                  className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-white transition-colors duration-300"
                 >
                   {item}
                 </a>
@@ -696,7 +816,7 @@ const Portfolio = () => {
         <section id="about" className="py-24">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
                 Turning Ideas Into<br />Digital Reality
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -713,7 +833,7 @@ const Portfolio = () => {
                     className={`flex items-center space-x-2 px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-300 ${
                       isDarkMode 
                         ? 'bg-gray-800 text-gray-200 hover:bg-gray-700' 
-                        : 'bg-white text-gray-600 hover:text-blue-600'
+                        : 'bg-white text-gray-600 hover:text-green-600'
                     }`}
                   >
                     <Icon size={20} aria-hidden="true" />
@@ -738,7 +858,7 @@ const Portfolio = () => {
                   onClick={() => setActiveFilter(id)}
                   className={`px-4 py-2 rounded-full transition-colors duration-300 ${
                     activeFilter === id
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-green-600 text-white'
                       : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                   aria-label={`Filter projects by ${label}`}
@@ -767,7 +887,7 @@ const Portfolio = () => {
                   key={index}
                   className="border border-gray-100 dark:border-gray-700 rounded-xl p-6 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900"
                 >
-                  <h3 className="text-lg font-semibold mb-4 text-blue-600 dark:text-blue-400">
+                  <h3 className="text-lg font-semibold mb-4 text-green-600 dark:text-green-400">
                     {skillGroup.category}
                   </h3>
                   <div className="space-y-3">
@@ -776,7 +896,7 @@ const Portfolio = () => {
                         key={skillIndex}
                         className="flex items-center space-x-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm"
                       >
-                        <div className="h-2 w-2 rounded-full bg-blue-500" />
+                        <div className="h-2 w-2 rounded-full bg-green-500" />
                         <span className="text-gray-700 dark:text-gray-300">{skill}</span>
                       </div>
                     ))}
@@ -798,7 +918,7 @@ const Portfolio = () => {
                 <div className="flex flex-col sm:flex-row justify-center gap-6">
                   <a 
                     href="mailto:juliuserictuliao@gmail.com" 
-                    className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+                    className="flex items-center justify-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
                     aria-label="Send email"
                   >
                     <MailIcon size={18} />
@@ -811,7 +931,7 @@ const Portfolio = () => {
                     className={`flex items-center justify-center space-x-2 px-6 py-3 rounded-full transition-colors ${
                       isDarkMode
                         ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
-                        : 'border border-gray-300 hover:border-blue-600 hover:text-blue-600'
+                        : 'border border-gray-300 hover:border-green-600 hover:text-green-600'
                     }`}
                     aria-label="Visit LinkedIn profile"
                   >
