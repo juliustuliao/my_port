@@ -429,7 +429,7 @@ CONTACT:
 - Medium: https://medium.com/@juliuserictuliao
 
 Instruction:
-Answer briefly, directly, and accurately about Julius’s work and experience. Be conversational and professional.`
+Answer briefly, directly, and accurately about Julius’s work and experience. Be conversational, limit answer to 1 sentence/ max of 50 words and professional.`
     }
   ]);
 
@@ -461,7 +461,7 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
     const { relevantProjects, relevantSkills } = getRelevantContext(userMessage);
     
     let contextParts = [
-      "You are Julius Eric Tuliao's AI assistant. Julius is a full-stack developer specializing in AI/ML, data engineering, and automation."
+      "You are Julius Eric Tuliao's AI assistant. Julius is a full-stack developer specializing in AI/ML, data engineering, and automation.limit answer to 1 sentence/ max of 50 words"
     ];
 
     if (relevantProjects.length > 0) {
