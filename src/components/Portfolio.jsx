@@ -371,7 +371,7 @@ const AIChatbot = ({ isDarkMode }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hi! I'm Julius's AI assistant powered by WebLLM. Ask me anything about his projects, skills, or experience!",
+      text: "Hi! I'm jest - Julius's AI assistant powered by WebLLM. Ask me anything about his projects, skills, or experience!",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -385,7 +385,7 @@ const AIChatbot = ({ isDarkMode }) => {
   const conversationHistory = useRef([
     {
       role: "system",
-      content: `You are jest the AI assistant of Julius. Be concise, accurate, and professional.. Here's information about Julius:
+      content: `Your name is jest the AI assistant of Julius. Be concise, accurate, and professional. Here's information about Julius:
 
 PROJECTS:
 ${PROJECTS.map(p => `- ${p.title}: ${p.description} (Technologies: ${p.tags.join(', ')}, Category: ${p.category})`).join('\n')}
