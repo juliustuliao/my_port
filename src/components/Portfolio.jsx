@@ -111,6 +111,25 @@ const CATEGORIES = [
       images: ["/images/alpr1.jpg"]
     },
     {
+      title: "ALPR Mobile App",
+      description: "developed mobile application for the alpr system compatible on android/ios devices using flutter.",
+      tags: ["Flutter","Computer Vision", "YOLOv8", "Object Detection", "Fine-tuning", "PTT"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/images/mobile1.jpg","/images/mobile2.jpg"]
+    },
+    
+    {
+      title: "Webrtc AI Agent Mobile App",
+      description: "developed mobile application connected to a an ai server  using flutterBuilt a real-time AI agent application powered by WebRTC for low-latency voice interactions. The system enables users to connect via a WebRTC session where their audio is processed through an AI pipeline: Voice Activity Detection (VAD), Speech-to-Text (STT), Large Language Model (LLM) for reasoning, and Text-to-Speech (TTS) for AI response.",
+      tags: ["Flutter", "WebRTC", "Livekit", "LLM", "TTS", "ASR", "Docker"],
+      category: "ai",
+      githubLink: "#",
+      liveLink: "#",
+      images: ["/images/webrtc1.jpg","/images/webrtc2.png","/images/webrtc3.png"]
+    },
+    {
       title: "RAG-Based Customer Support AI",
       description: "Led the development of conversational AI system handling 40K+ messages monthly, resolving 80% of Level 1 inquiries. Utilized LlamaIndex, vector DB, Docker, Redis, and VLLM with intelligent human escalation protocols.",
       tags: ["RAG", "LlamaIndex", "Vector DB", "VLLM", "Redis", "Docker"],
@@ -163,7 +182,7 @@ const CATEGORIES = [
       githubLink: "#",
       liveLink: "#",
       images: ["/images/datawarehouse0.png","/images/datawarehouse1.png", "/images/datawarehouse2.png"]
-    },
+    },  
     {
       title: "Route Optimization System",
       description: "Created advanced routing engine optimizing 10,000+ destinations daily. Increased field productivity by 66% through intelligent route planning, improving from 15 to 25 daily account visits.",
