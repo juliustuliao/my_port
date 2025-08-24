@@ -554,9 +554,8 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
               initProgressCallback: (report) => {
                 setLoadingProgress(`Web Worker: ${report.text}`);
               },
-              appConfig: {
-                useIndexedDB: true, // Enable caching for faster subsequent loads
-              }
+              // Simplified config to avoid compatibility issues
+              useIndexedDB: true, // Enable caching for faster subsequent loads
             }
           );
           
@@ -591,6 +590,11 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
       } catch (error) {
         console.error(`Attempt ${attempts} failed:`, error);
         
+        // Detect Web Worker specific issues
+        if (attempts === 1 && (error.message?.includes('find') || error.name === 'TypeError')) {
+          console.log('Web Worker compatibility issue detected, falling back to main thread');
+        }
+        
         if (attempts < maxAttempts) {
           console.log(`Retrying with fallback method...`);
           engineRef.current = null; // Reset for next attempt
@@ -601,7 +605,7 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
         // All attempts failed
         const errorType = error.message?.includes('out of memory') || error.message?.includes('OOM') ? 'memory' :
                          error.message?.includes('network') || error.message?.includes('fetch') ? 'network' :
-                         error.message?.includes('worker') ? 'worker' : 'unknown';
+                         error.message?.includes('worker') || error.message?.includes('find') ? 'worker' : 'unknown';
         
         switch (errorType) {
           case 'memory':
