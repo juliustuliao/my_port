@@ -400,6 +400,72 @@ Please provide helpful, accurate responses about Julius's work. Be conversationa
     }
   ]);
 
+  // Helper function to get relevant context based on user query
+  const getRelevantContext = (userMessage) => {
+    const message = userMessage.toLowerCase();
+    let relevantProjects = [];
+    let relevantSkills = [];
+
+    // Find relevant projects based on keywords
+    relevantProjects = PROJECTS.filter(project => 
+      project.title.toLowerCase().includes(message) ||
+      project.description.toLowerCase().includes(message) ||
+      project.tags.some(tag => tag.toLowerCase().includes(message)) ||
+      project.category.toLowerCase().includes(message)
+    ).slice(0, 3); // Limit to top 3 relevant projects
+
+    // Find relevant skills based on keywords
+    relevantSkills = SKILLS.filter(skill => 
+      skill.category.toLowerCase().includes(message) ||
+      skill.items.some(item => item.toLowerCase().includes(message))
+    ).slice(0, 2); // Limit to top 2 relevant skill categories
+
+    return { relevantProjects, relevantSkills };
+  };
+
+  // Create optimized system prompt with only relevant context
+  const createOptimizedSystemPrompt = (userMessage = '') => {
+    const { relevantProjects, relevantSkills } = getRelevantContext(userMessage);
+    
+    let contextParts = [
+      "You are Julius Eric Tuliao's AI assistant. Julius is a full-stack developer specializing in AI/ML, data engineering, and automation."
+    ];
+
+    if (relevantProjects.length > 0) {
+      const projectsText = relevantProjects.map(p => 
+        `- ${p.title}: ${p.description.substring(0, 150)}... (Tech: ${p.tags.slice(0, 4).join(', ')})`
+      ).join('\n');
+      contextParts.push(`\nRELEVANT PROJECTS:\n${projectsText}`);
+    }
+
+    if (relevantSkills.length > 0) {
+      const skillsText = relevantSkills.map(skill => 
+        `${skill.category}: ${skill.items.slice(0, 6).join(', ')}`
+      ).join('\n');
+      contextParts.push(`\nRELEVANT SKILLS:\n${skillsText}`);
+    }
+
+    contextParts.push(`\nCONTACT:\nEmail: juliuserictuliao@gmail.com | LinkedIn: linkedin.com/in/juliustuliao | HuggingFace: huggingface.co/juliuserictuliao`);
+    contextParts.push(`\nBe helpful, accurate, and professional in your responses.`);
+
+    return contextParts.join('');
+  };
+
+  // Create minimal system prompt as last resort
+  const createMinimalSystemPrompt = () => {
+    return `You are Julius Eric Tuliao's AI assistant. Julius is a full-stack developer specializing in AI/ML, data engineering, and automation. He has extensive experience in ASR systems, computer vision, RAG-based chatbots, enterprise data warehouses, and automation solutions. Contact: juliuserictuliao@gmail.com. Be helpful and professional.`;
+  };
+
+  // Trim conversation history to fit context window
+  const trimConversationHistory = (messages, maxLength = 10) => {
+    // Always keep the system message (first one)
+    if (messages.length <= maxLength) return messages;
+    
+    const systemMessage = messages[0];
+    const recentMessages = messages.slice(-(maxLength - 1));
+    return [systemMessage, ...recentMessages];
+  };
+
   const initializeWebLLM = async () => {
     if (isModelReady || isModelLoading) return;
     
@@ -419,8 +485,8 @@ Please provide helpful, accurate responses about Julius's work. Be conversationa
         top_p: 0.9,
       };
 
-      // Use a lightweight model for better performance
-      await engineRef.current.reload("TinyLlama-1.1B-Chat-v0.4-q4f32_1-MLC-1k", config);
+      // Use Phi-3.5 for larger context window (128K tokens)
+      await engineRef.current.reload("Phi-3.5-mini-instruct-q4f16_1-MLC", config);
       
       setIsModelReady(true);
       setLoadingProgress('Model ready!');
@@ -486,9 +552,73 @@ Please provide helpful, accurate responses about Julius's work. Be conversationa
       let responseText = '';
       
       if (isModelReady && engineRef.current) {
-        // Use WebLLM for response
+        // Try different context optimization strategies
+        await tryWithContextOptimization(currentInput);
+      } else {
+        // Fallback to rule-based responses
+        responseText = generateFallbackResponse(currentInput);
+        
+        setTimeout(() => {
+          const botResponse = {
+            id: Date.now() + 1,
+            text: responseText,
+            sender: 'bot',
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, botResponse]);
+          setIsTyping(false);
+        }, 1000);
+      }
+
+    } catch (error) {
+      console.error('Error generating response:', error);
+      const fallbackResponse = {
+        id: Date.now() + 1,
+        text: generateFallbackResponse(currentInput),
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, fallbackResponse]);
+      setIsTyping(false);
+    }
+  };
+
+  const tryWithContextOptimization = async (currentInput) => {
+    const strategies = [
+      // Strategy 1: Use original full context
+      () => conversationHistory.current,
+      
+      // Strategy 2: Use trimmed conversation history
+      () => trimConversationHistory(conversationHistory.current, 8),
+      
+      // Strategy 3: Use optimized context with relevant info only
+      () => {
+        const optimizedSystemPrompt = createOptimizedSystemPrompt(currentInput);
+        const trimmedHistory = trimConversationHistory(conversationHistory.current, 5);
+        return [
+          { role: "system", content: optimizedSystemPrompt },
+          ...trimmedHistory.slice(1) // Skip original system message
+        ];
+      },
+      
+      // Strategy 4: Use minimal context as last resort
+      () => {
+        const minimalSystemPrompt = createMinimalSystemPrompt();
+        const recentMessages = conversationHistory.current.slice(-3); // Only last few messages
+        return [
+          { role: "system", content: minimalSystemPrompt },
+          ...recentMessages.filter(msg => msg.role !== "system")
+        ];
+      }
+    ];
+
+    for (let i = 0; i < strategies.length; i++) {
+      try {
+        const messages = strategies[i]();
+        console.log(`Trying strategy ${i + 1} with ${messages.length} messages`);
+        
         const completion = await engineRef.current.chat.completions.create({
-          messages: conversationHistory.current,
+          messages: messages,
           stream: true,
         });
 
@@ -514,41 +644,40 @@ Please provide helpful, accurate responses about Julius's work. Be conversationa
             ));
           }
         }
-        responseText = currentResponse;
-      } else {
-        // Fallback to rule-based responses
-        responseText = generateFallbackResponse(currentInput);
+
+        // Success! Add response to conversation history
+        if (currentResponse) {
+          conversationHistory.current.push({
+            role: "assistant", 
+            content: currentResponse
+          });
+
+          // If we had to use an optimized strategy, update the conversation history
+          if (i > 0) {
+            console.log(`Successfully used optimization strategy ${i + 1}`);
+            // Trim conversation history to prevent future context issues
+            conversationHistory.current = trimConversationHistory(conversationHistory.current, 6);
+          }
+        }
         
-        setTimeout(() => {
-          const botResponse = {
-            id: Date.now() + 1,
-            text: responseText,
-            sender: 'bot',
-            timestamp: new Date()
-          };
-          setMessages(prev => [...prev, botResponse]);
-          setIsTyping(false);
-        }, 1000);
+        return; // Success, exit the retry loop
+        
+      } catch (error) {
+        const isContextError = error.message?.includes('ContextWindowSizeExceededError') || 
+                             error.message?.includes('context window size') ||
+                             error.message?.includes('prompt tokens exceed');
+        
+        if (isContextError && i < strategies.length - 1) {
+          console.log(`Context window exceeded with strategy ${i + 1}, trying next strategy...`);
+          continue; // Try next strategy
+        } else {
+          console.error(`Strategy ${i + 1} failed:`, error);
+          if (i === strategies.length - 1) {
+            // All strategies failed, throw error to trigger fallback
+            throw error;
+          }
+        }
       }
-
-      // Add bot response to conversation history
-      if (responseText) {
-        conversationHistory.current.push({
-          role: "assistant", 
-          content: responseText
-        });
-      }
-
-    } catch (error) {
-      console.error('Error generating response:', error);
-      const fallbackResponse = {
-        id: Date.now() + 1,
-        text: generateFallbackResponse(currentInput),
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, fallbackResponse]);
-      setIsTyping(false);
     }
   };
 
