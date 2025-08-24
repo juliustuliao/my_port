@@ -401,10 +401,10 @@ const AIChatbot = ({ isDarkMode }) => {
   const getOptimalModel = () => {
     if (isLowMemoryDevice()) {
       // Ultra-lightweight model for low-memory devices (~150MB)
-      return "SmolLM2-135M-Instruct-q0f32-MLC";
+      return "Qwen3-0.6B-q0f32-MLC";
     } else if (isMobile()) {
       // Small but capable model for mobile (~600MB)
-      return "SmolLM2-360M-Instruct-q4f16_1-MLC";
+      return "Qwen3-0.6B-q0f16-MLC";
     } else {
       // Full-featured model for desktop (~2.4GB)
       return "Phi-3.5-mini-instruct-q4f16_1-MLC";
