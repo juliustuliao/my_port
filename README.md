@@ -41,8 +41,9 @@ A modern, responsive portfolio website featuring an AI-powered chatbot assistant
 - **WebLLM** - Browser-based large language model inference
 - **Multiple Model Support**:
   - Phi-3.5-mini (Desktop)
-  - SmolLM2-360M (Mobile)
+  - SmolLM2-360M (Mobile)  
   - SmolLM2-135M (Low Memory)
+- **Advanced Optimization** - See [WEBLLM_OPTIMIZATION.md](./WEBLLM_OPTIMIZATION.md) for Web Workers and caching
 
 ### Development
 - **ESLint** - Code linting and formatting

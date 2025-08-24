@@ -6,6 +6,10 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.cjs',
   },
+  worker: {
+    format: 'es', // Enable ES modules in workers
+    plugins: () => [react()],
+  },
   build: {
     rollupOptions: {
       output: {
@@ -21,8 +25,13 @@ export default defineConfig({
     },
     // Increase chunk size warning limit for AI models
     chunkSizeWarningLimit: 6000,
+    // Web Worker support
+    target: 'esnext',
   },
   optimizeDeps: {
     exclude: ['@mlc-ai/web-llm']
+  },
+  define: {
+    global: 'globalThis',
   }
 })

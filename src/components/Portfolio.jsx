@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import * as webllm from '@mlc-ai/web-llm';
+import { CreateWebWorkerMLCEngine } from '@mlc-ai/web-llm';
 import { 
   GithubIcon, LinkedinIcon, MailIcon, 
   ExternalLinkIcon, MenuIcon, XIcon, 
@@ -517,47 +517,133 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
       setDeviceWarning('Using mobile-optimized model for better performance');
     }
 
-    try {
-      if (!engineRef.current) {
-        engineRef.current = new webllm.MLCEngine();
-        engineRef.current.setInitProgressCallback((report) => {
-          setLoadingProgress(report.text);
-        });
+    // Try Web Worker first, then fallback to main thread
+    let attempts = 0;
+    const maxAttempts = 2;
+
+    while (attempts < maxAttempts && !engineRef.current) {
+      try {
+        attempts++;
+        
+        if (attempts === 1) {
+          // First attempt: Web Worker
+          console.log(`Attempt ${attempts}: Creating WebWorker MLCEngine with model: ${selectedModel}`);
+          setLoadingProgress(`Loading AI in Web Worker (${deviceType})...`);
+          
+          const worker = new Worker(new URL('/ai-worker.js', import.meta.url), { 
+            type: "module" 
+          });
+          
+          // Enhanced worker error handling
+          worker.onerror = (error) => {
+            console.error('Worker error:', error);
+            worker.terminate();
+          };
+          
+          worker.onmessageerror = (error) => {
+            console.error('Worker message error:', error);
+            worker.terminate();
+          };
+          
+          engineRef.current = await CreateWebWorkerMLCEngine(
+            worker,
+            selectedModel,
+            {
+              temperature: 0.7,
+              top_p: 0.9,
+              initProgressCallback: (report) => {
+                setLoadingProgress(`Web Worker: ${report.text}`);
+              },
+              appConfig: {
+                useIndexedDB: true, // Enable caching for faster subsequent loads
+              }
+            }
+          );
+          
+          console.log('✅ WebWorker MLCEngine initialized successfully');
+          
+        } else {
+          // Second attempt: Main thread fallback
+          console.log(`Attempt ${attempts}: Fallback to main thread MLCEngine`);
+          setLoadingProgress(`Loading AI in main thread (${deviceType})...`);
+          setDeviceWarning('Using main thread for AI processing');
+          
+          // Import main thread engine as fallback
+          const { MLCEngine } = await import('@mlc-ai/web-llm');
+          engineRef.current = new MLCEngine();
+          
+          engineRef.current.setInitProgressCallback((report) => {
+            setLoadingProgress(`Main Thread: ${report.text}`);
+          });
+
+          const config = {
+            temperature: 0.7,
+            top_p: 0.9,
+          };
+
+          await engineRef.current.reload(selectedModel, config);
+          console.log('✅ Main thread MLCEngine initialized successfully');
+        }
+        
+        // Success - break out of retry loop
+        break;
+        
+      } catch (error) {
+        console.error(`Attempt ${attempts} failed:`, error);
+        
+        if (attempts < maxAttempts) {
+          console.log(`Retrying with fallback method...`);
+          engineRef.current = null; // Reset for next attempt
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait before retry
+          continue;
+        }
+        
+        // All attempts failed
+        const errorType = error.message?.includes('out of memory') || error.message?.includes('OOM') ? 'memory' :
+                         error.message?.includes('network') || error.message?.includes('fetch') ? 'network' :
+                         error.message?.includes('worker') ? 'worker' : 'unknown';
+        
+        switch (errorType) {
+          case 'memory':
+            setLoadingProgress('Device memory insufficient. Using text-based responses.');
+            setDeviceWarning('Your device has limited memory. Chat will use simplified responses.');
+            break;
+          case 'network':
+            setLoadingProgress('Network error. Using offline responses.');
+            setDeviceWarning('Unable to download AI model. Using offline responses.');
+            break;
+          case 'worker':
+            setLoadingProgress('Web Worker unavailable. Using simplified responses.');
+            setDeviceWarning('Advanced AI features not available on this device.');
+            break;
+          default:
+            setLoadingProgress('AI model unavailable. Using fallback responses.');
+            setDeviceWarning('AI features limited on this device.');
+        }
+        
+        setTimeout(() => {
+          setLoadingProgress('');
+        }, 5000);
+        
+        return; // Exit function
       }
-
-      const config = {
-        temperature: 0.7,
-        top_p: 0.9,
-      };
-
-      console.log(`Loading model: ${selectedModel} for ${deviceType}`);
-      await engineRef.current.reload(selectedModel, config);
-      
+    }
+    
+    if (engineRef.current) {
       setIsModelReady(true);
-      setLoadingProgress('AI model ready!');
-      setDeviceWarning('');
-      setTimeout(() => setLoadingProgress(''), 2000);
-    } catch (error) {
-      console.error('Failed to initialize WebLLM:', error);
-      
-      // More specific error handling
-      if (error.message?.includes('out of memory') || error.message?.includes('OOM')) {
-        setLoadingProgress('Device memory insufficient. Using text-based responses.');
-        setDeviceWarning('Your device has limited memory. Chat will use simplified responses.');
-      } else if (error.message?.includes('network') || error.message?.includes('fetch')) {
-        setLoadingProgress('Network error. Using offline responses.');
-        setDeviceWarning('Unable to download AI model. Using offline responses.');
+      setLoadingProgress('✅ AI model ready!');
+      if (attempts === 1) {
+        setDeviceWarning('Web Worker AI active - smooth performance!');
       } else {
-        setLoadingProgress('AI model unavailable. Using fallback responses.');
-        setDeviceWarning('AI features limited on this device.');
+        setDeviceWarning('Main thread AI active');
       }
-      
       setTimeout(() => {
         setLoadingProgress('');
-      }, 5000);
-    } finally {
-      setIsModelLoading(false);
+        setDeviceWarning('');
+      }, 3000);
     }
+    
+    setIsModelLoading(false);
   };
 
   const generateFallbackResponse = (userMessage) => {
