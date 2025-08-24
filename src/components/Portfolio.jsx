@@ -385,7 +385,7 @@ const AIChatbot = ({ isDarkMode }) => {
   const conversationHistory = useRef([
     {
       role: "system",
-      content: `You are Julius Eric Tuliao's AI assistant. You are knowledgeable about his work and experience. Here's information about Julius:
+      content: `You are jest the AI assistant of Julius. Be concise, accurate, and professional.. Here's information about Julius:
 
 PROJECTS:
 ${PROJECTS.map(p => `- ${p.title}: ${p.description} (Technologies: ${p.tags.join(', ')}, Category: ${p.category})`).join('\n')}
@@ -399,7 +399,8 @@ CONTACT:
 - HuggingFace: https://huggingface.co/juliuserictuliao
 - Medium: https://medium.com/@juliuserictuliao
 
-Please provide helpful, accurate responses about Julius's work. Be conversational and professional.`
+Instruction:
+Answer briefly, directly, and accurately about Julius’s work and experience. Be conversational and professional.`
     }
   ]);
 
