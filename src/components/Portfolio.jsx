@@ -381,7 +381,36 @@ const AIChatbot = ({ isDarkMode }) => {
   const [isModelLoading, setIsModelLoading] = useState(false);
   const [isModelReady, setIsModelReady] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState('');
+  const [deviceWarning, setDeviceWarning] = useState('');
   const engineRef = useRef(null);
+  
+  // Device detection for mobile optimization
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           window.innerWidth <= 768;
+  };
+
+  const isLowMemoryDevice = () => {
+    // Check for indicators of low-memory devices
+    const userAgent = navigator.userAgent;
+    const isOldMobile = /Android [1-6]\.|iPhone OS [1-9]_/i.test(userAgent);
+    const hasLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4; // 4GB or less
+    return isOldMobile || hasLowMemory || (isMobile() && window.innerWidth <= 480);
+  };
+
+  const getOptimalModel = () => {
+    if (isLowMemoryDevice()) {
+      // Ultra-lightweight model for low-memory devices (~150MB)
+      return "SmolLM2-135M-Instruct-q0f32-MLC";
+    } else if (isMobile()) {
+      // Small but capable model for mobile (~600MB)
+      return "SmolLM2-360M-Instruct-q4f16_1-MLC";
+    } else {
+      // Full-featured model for desktop (~2.4GB)
+      return "Phi-3.5-mini-instruct-q4f16_1-MLC";
+    }
+  };
+
   const conversationHistory = useRef([
     {
       role: "system",
@@ -474,7 +503,19 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
     if (isModelReady || isModelLoading) return;
     
     setIsModelLoading(true);
-    setLoadingProgress('Initializing WebLLM...');
+    setDeviceWarning('');
+
+    const selectedModel = getOptimalModel();
+    const deviceType = isLowMemoryDevice() ? 'low-memory device' : isMobile() ? 'mobile device' : 'desktop';
+    
+    setLoadingProgress(`Initializing AI model for ${deviceType}...`);
+
+    // Show device-specific warnings
+    if (isLowMemoryDevice()) {
+      setDeviceWarning('Using lightweight model optimized for your device');
+    } else if (isMobile()) {
+      setDeviceWarning('Using mobile-optimized model for better performance');
+    }
 
     try {
       if (!engineRef.current) {
@@ -489,16 +530,31 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
         top_p: 0.9,
       };
 
-      // Use Phi-3.5 for larger context window (128K tokens)
-      await engineRef.current.reload("Phi-3.5-mini-instruct-q4f16_1-MLC", config);
+      console.log(`Loading model: ${selectedModel} for ${deviceType}`);
+      await engineRef.current.reload(selectedModel, config);
       
       setIsModelReady(true);
-      setLoadingProgress('Model ready!');
+      setLoadingProgress('AI model ready!');
+      setDeviceWarning('');
       setTimeout(() => setLoadingProgress(''), 2000);
     } catch (error) {
       console.error('Failed to initialize WebLLM:', error);
-      setLoadingProgress('Failed to load model. Using fallback responses.');
-      setTimeout(() => setLoadingProgress(''), 3000);
+      
+      // More specific error handling
+      if (error.message?.includes('out of memory') || error.message?.includes('OOM')) {
+        setLoadingProgress('Device memory insufficient. Using text-based responses.');
+        setDeviceWarning('Your device has limited memory. Chat will use simplified responses.');
+      } else if (error.message?.includes('network') || error.message?.includes('fetch')) {
+        setLoadingProgress('Network error. Using offline responses.');
+        setDeviceWarning('Unable to download AI model. Using offline responses.');
+      } else {
+        setLoadingProgress('AI model unavailable. Using fallback responses.');
+        setDeviceWarning('AI features limited on this device.');
+      }
+      
+      setTimeout(() => {
+        setLoadingProgress('');
+      }, 5000);
     } finally {
       setIsModelLoading(false);
     }
@@ -692,22 +748,36 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
     }
   };
 
-  // Initialize WebLLM when chatbot opens
+  // Check device capabilities and show warning on first open
   useEffect(() => {
-    if (isOpen && !isModelReady && !isModelLoading) {
+    if (isOpen && !isModelReady && !isModelLoading && !loadingProgress && !deviceWarning) {
+      // Check if device can handle AI models
+      const hasExtremeLowMemory = navigator.deviceMemory && navigator.deviceMemory < 2;
+      const isVeryOldDevice = /Android [1-4]\.|iPhone OS [1-8]_/i.test(navigator.userAgent);
+      
+      if (hasExtremeLowMemory || isVeryOldDevice) {
+        setDeviceWarning('Your device may not support AI features. Using simplified responses.');
+        setTimeout(() => setDeviceWarning(''), 8000);
+        return; // Don't try to load model
+      }
+      
       initializeWebLLM();
     }
-  }, [isOpen, isModelReady, isModelLoading]);
+  }, [isOpen, isModelReady, isModelLoading, loadingProgress, deviceWarning]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {/* Chat Window */}
       {isOpen && (
-        <div className={`mb-4 w-80 h-96 rounded-lg shadow-2xl border ${
+        <div className={`mb-4 rounded-lg shadow-2xl border ${
           isDarkMode 
             ? 'bg-gray-800 border-gray-700' 
             : 'bg-white border-gray-200'
-        } flex flex-col`}>
+        } flex flex-col ${
+          isMobile() 
+            ? 'w-72 h-80 sm:w-80 sm:h-96' // Smaller on mobile
+            : 'w-80 h-96'
+        }`}>
           {/* Header */}
           <div className={`p-4 border-b rounded-t-lg ${
             isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'
@@ -749,6 +819,16 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
               isDarkMode ? 'border-gray-700 bg-gray-800 text-gray-300' : 'border-gray-200 bg-blue-50 text-gray-700'
             }`}>
               {loadingProgress}
+            </div>
+          )}
+
+          {/* Device Warning */}
+          {deviceWarning && (
+            <div className={`px-4 py-2 border-b text-xs ${
+              isDarkMode ? 'border-gray-700 bg-orange-900 text-orange-200' : 'border-gray-200 bg-orange-50 text-orange-700'
+            } flex items-center space-x-2`}>
+              <span>⚠️</span>
+              <span>{deviceWarning}</span>
             </div>
           )}
 
