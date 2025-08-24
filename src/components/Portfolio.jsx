@@ -9,7 +9,8 @@ import {
   MessageCircleIcon,
   SendIcon,
   BotIcon,
-  UserIcon
+  UserIcon,
+  BookAIcon
 } from 'lucide-react';
 const CATEGORIES = [
     { id: 'all', label: 'All Projects' },
@@ -265,7 +266,8 @@ const CATEGORIES = [
   const SOCIAL_LINKS = [
     { icon: GithubIcon, label: 'HuggingFace', href: 'https://huggingface.co/juliuserictuliao' },
     { icon: LinkedinIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/juliustuliao' },
-    { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' }
+    { icon: MailIcon, label: 'Email', href: 'mailto:juliuserictuliao@gmail.com' },
+    { icon: BookAIcon, label: 'Medium', href: 'https://medium.com/@juliuserictuliao' }
   ];
 const ThemeToggle = ({ isDarkMode, setIsDarkMode }) => (
   <button
@@ -395,6 +397,7 @@ CONTACT:
 - Email: juliuserictuliao@gmail.com
 - LinkedIn: https://www.linkedin.com/in/juliustuliao  
 - HuggingFace: https://huggingface.co/juliuserictuliao
+- Medium: https://medium.com/@juliuserictuliao
 
 Please provide helpful, accurate responses about Julius's work. Be conversational and professional.`
     }
