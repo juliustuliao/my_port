@@ -4,7 +4,11 @@ import {
   ExternalLinkIcon, MenuIcon, XIcon, 
   MoonIcon, SunIcon,
   ChevronLeftIcon,
-  ChevronRightIcon 
+  ChevronRightIcon,
+  MessageCircleIcon,
+  SendIcon,
+  BotIcon,
+  UserIcon
 } from 'lucide-react';
 const CATEGORIES = [
     { id: 'all', label: 'All Projects' },
@@ -122,7 +126,7 @@ const CATEGORIES = [
     
     {
       title: "Webrtc AI Agent Mobile App",
-      description: "developed mobile application connected to a an ai server  using flutterBuilt a real-time AI agent application powered by WebRTC for low-latency voice interactions. The system enables users to connect via a WebRTC session where their audio is processed through an AI pipeline: Voice Activity Detection (VAD), Speech-to-Text (STT), Large Language Model (LLM) for reasoning, and Text-to-Speech (TTS) for AI response.",
+      description: "Built a real-time AI agent application powered by WebRTC for low-latency voice interactions. The system enables users to connect via a WebRTC session where their audio is processed through an AI pipeline: Voice Activity Detection (VAD), Speech-to-Text (STT), Large Language Model (LLM) for reasoning, and Text-to-Speech (TTS) for AI response.",
       tags: ["Flutter", "WebRTC", "Livekit", "LLM", "TTS", "ASR", "Docker"],
       category: "ai",
       githubLink: "#",
@@ -359,6 +363,239 @@ const ProjectCard = ({ project }) => {
   );
 };
 
+const AIChatbot = ({ isDarkMode }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      text: "Hi! I'm Julius's AI assistant. Ask me anything about his projects, skills, or experience!",
+      sender: 'bot',
+      timestamp: new Date()
+    }
+  ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const generateResponse = (userMessage) => {
+    const message = userMessage.toLowerCase();
+    
+    // Search for relevant projects
+    const relevantProjects = PROJECTS.filter(project => 
+      project.title.toLowerCase().includes(message) ||
+      project.description.toLowerCase().includes(message) ||
+      project.tags.some(tag => tag.toLowerCase().includes(message)) ||
+      project.category.toLowerCase().includes(message)
+    );
+
+    // Skill-based responses
+    const skillCategories = SKILLS.map(skill => skill.category.toLowerCase());
+    const matchingSkill = SKILLS.find(skill => 
+      skill.category.toLowerCase().includes(message) ||
+      skill.items.some(item => item.toLowerCase().includes(message))
+    );
+
+    // General questions
+    if (message.includes('hello') || message.includes('hi')) {
+      return "Hello! I'm here to help you learn more about Julius's work. You can ask me about his AI projects, data engineering experience, automation work, or any specific technologies.";
+    }
+    
+    if (message.includes('contact') || message.includes('reach')) {
+      return "You can reach Julius at juliuserictuliao@gmail.com or connect with him on LinkedIn at https://www.linkedin.com/in/juliustuliao. He's also active on HuggingFace at https://huggingface.co/juliuserictuliao";
+    }
+
+    if (message.includes('experience') || message.includes('background')) {
+      return "Julius is a full-stack developer specializing in AI/ML, data engineering, and automation. He has led teams in developing enterprise-scale solutions including ASR systems, RAG-based chatbots, and high-throughput platforms processing millions of transactions.";
+    }
+
+    // Project-specific responses
+    if (relevantProjects.length > 0) {
+      const project = relevantProjects[0];
+      return `Great question about ${project.title}! ${project.description} This project uses technologies like ${project.tags.join(', ')}. Would you like to know more about any specific aspect?`;
+    }
+
+    // Skill-specific responses
+    if (matchingSkill) {
+      return `Julius has extensive experience in ${matchingSkill.category}. His skills include: ${matchingSkill.items.join(', ')}. He's worked on multiple projects utilizing these technologies.`;
+    }
+
+    // Category-based responses
+    if (message.includes('ai') || message.includes('machine learning') || message.includes('ml')) {
+      const aiProjects = PROJECTS.filter(p => p.category === 'ai');
+      return `Julius has worked on ${aiProjects.length} major AI/ML projects including ASR engines, computer vision systems, RAG-based chatbots, and LLM applications. Notable ones include the Tagalog ASR Engine and AI Research Assistant.`;
+    }
+
+    if (message.includes('data') || message.includes('engineering')) {
+      const dataProjects = PROJECTS.filter(p => p.category === 'data');
+      return `In data engineering, Julius has built ${dataProjects.length} major systems including enterprise data warehouses, route optimization systems, and analytics dashboards processing millions of records daily.`;
+    }
+
+    if (message.includes('automation') || message.includes('rpa')) {
+      const autoProjects = PROJECTS.filter(p => p.category === 'automation');
+      return `Julius has developed ${autoProjects.length} automation solutions including RPA bots processing 300K+ kg of sales data monthly and smart email management systems using LLMs.`;
+    }
+
+    // Default response
+    return "I'd be happy to help! You can ask me about Julius's AI/ML projects, data engineering work, automation solutions, or any specific technologies like ASR, computer vision, or web development.";
+  };
+
+  const handleSendMessage = () => {
+    if (!inputMessage.trim()) return;
+
+    const userMessage = {
+      id: Date.now(),
+      text: inputMessage,
+      sender: 'user',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+    setIsTyping(true);
+
+    setTimeout(() => {
+      const botResponse = {
+        id: Date.now() + 1,
+        text: generateResponse(inputMessage),
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, botResponse]);
+      setIsTyping(false);
+    }, 1000 + Math.random() * 1000);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50">
+      {/* Chat Window */}
+      {isOpen && (
+        <div className={`mb-4 w-80 h-96 rounded-lg shadow-2xl border ${
+          isDarkMode 
+            ? 'bg-gray-800 border-gray-700' 
+            : 'bg-white border-gray-200'
+        } flex flex-col`}>
+          {/* Header */}
+          <div className={`p-4 border-b rounded-t-lg ${
+            isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'
+          } flex items-center justify-between`}>
+            <div className="flex items-center space-x-2">
+              <BotIcon size={20} className="text-blue-500" />
+              <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                Julius's AI Assistant
+              </span>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={`p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                isDarkMode ? 'text-gray-300' : 'text-gray-500'
+              }`}
+            >
+              <XIcon size={16} />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className={`flex items-start space-x-2 max-w-xs ${
+                  message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : 'flex-row'
+                }`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    message.sender === 'user' 
+                      ? 'bg-blue-500' 
+                      : isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
+                  }`}>
+                    {message.sender === 'user' ? (
+                      <UserIcon size={16} className="text-white" />
+                    ) : (
+                      <BotIcon size={16} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
+                    )}
+                  </div>
+                  <div className={`px-3 py-2 rounded-lg ${
+                    message.sender === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : isDarkMode 
+                        ? 'bg-gray-700 text-gray-200' 
+                        : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    <p className="text-sm">{message.text}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="flex items-start space-x-2">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
+                  }`}>
+                    <BotIcon size={16} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
+                  </div>
+                  <div className={`px-3 py-2 rounded-lg ${
+                    isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+                  }`}>
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className={`p-4 border-t ${
+            isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'
+          }`}>
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask about Julius's projects..."
+                className={`flex-1 px-3 py-2 rounded-lg border text-sm ${
+                  isDarkMode 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                    : 'bg-white border-gray-300 text-gray-800 placeholder-gray-500'
+                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={!inputMessage.trim()}
+                className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <SendIcon size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toggle Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-14 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+      >
+        <MessageCircleIcon size={24} />
+      </button>
+    </div>
+  );
+};
+
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => 
@@ -587,6 +824,9 @@ const Portfolio = () => {
           </div>
         </section>
       </main>
+      
+      {/* AI Chatbot */}
+      <AIChatbot isDarkMode={isDarkMode} />
     </div>
   );
 };
