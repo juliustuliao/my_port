@@ -371,7 +371,7 @@ const AIChatbot = ({ isDarkMode }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hi! I'm jest - Julius's AI assistant powered by WebLLM. Ask me anything about his projects, skills, or experience!",
+      text: "Hi! I'm Jest - Julius's AI assistant. Send me a message to activate my AI capabilities, or I can help with basic questions right away!",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -641,6 +641,16 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
       } else {
         setDeviceWarning('Main thread AI active');
       }
+      
+      // Add a message to the chat indicating AI is ready
+      const aiReadyMessage = {
+        id: Date.now(),
+        text: "🚀 My full AI capabilities are now active! Feel free to ask me detailed questions about Julius's work.",
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, aiReadyMessage]);
+      
       setTimeout(() => {
         setLoadingProgress('');
         setDeviceWarning('');
@@ -702,11 +712,33 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
       let responseText = '';
       
       if (isModelReady && engineRef.current) {
-        // Try different context optimization strategies
+        // Model is ready, use AI response
         await tryWithContextOptimization(currentInput);
+      } else if (!isModelLoading) {
+        // Initialize model on first message (lazy loading)
+        const shouldInitialize = await initializeModelIfNeeded();
+        
+        if (shouldInitialize) {
+          // Model is now loading, show loading message and use fallback for now
+          responseText = `I'm initializing my AI capabilities. Meanwhile, here's what I can tell you: ${generateFallbackResponse(currentInput)}`;
+        } else {
+          // Device can't handle AI, use fallback only
+          responseText = generateFallbackResponse(currentInput);
+        }
+        
+        setTimeout(() => {
+          const botResponse = {
+            id: Date.now() + 1,
+            text: responseText,
+            sender: 'bot',
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, botResponse]);
+          setIsTyping(false);
+        }, 1000);
       } else {
-        // Fallback to rule-based responses
-        responseText = generateFallbackResponse(currentInput);
+        // Model is already loading, use fallback response
+        responseText = `I'm still loading my AI model. Here's what I can tell you now: ${generateFallbackResponse(currentInput)}`;
         
         setTimeout(() => {
           const botResponse = {
@@ -838,22 +870,34 @@ Answer briefly, directly, and accurately about Julius’s work and experience. B
     }
   };
 
-  // Check device capabilities and show warning on first open
-  useEffect(() => {
-    if (isOpen && !isModelReady && !isModelLoading && !loadingProgress && !deviceWarning) {
-      // Check if device can handle AI models
-      const hasExtremeLowMemory = navigator.deviceMemory && navigator.deviceMemory < 2;
-      const isVeryOldDevice = /Android [1-4]\.|iPhone OS [1-8]_/i.test(navigator.userAgent);
-      
-      if (hasExtremeLowMemory || isVeryOldDevice) {
-        setDeviceWarning('Your device may not support AI features. Using simplified responses.');
-        setTimeout(() => setDeviceWarning(''), 8000);
-        return; // Don't try to load model
-      }
-      
-      initializeWebLLM();
+  // Initialize model only when user sends first message (lazy loading)
+  const initializeModelIfNeeded = async () => {
+    if (isModelReady || isModelLoading) return;
+    
+    // Check if device can handle AI models
+    const hasExtremeLowMemory = navigator.deviceMemory && navigator.deviceMemory < 2;
+    const isVeryOldDevice = /Android [1-4]\.|iPhone OS [1-8]_/i.test(navigator.userAgent);
+    
+    if (hasExtremeLowMemory || isVeryOldDevice) {
+      setDeviceWarning('Your device may not support AI features. Using simplified responses.');
+      setTimeout(() => setDeviceWarning(''), 8000);
+      return false; // Don't try to load model
     }
-  }, [isOpen, isModelReady, isModelLoading, loadingProgress, deviceWarning]);
+    
+    // Use requestIdleCallback to load model when browser is idle
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(() => {
+        initializeWebLLM();
+      });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        initializeWebLLM();
+      }, 100);
+    }
+    
+    return true;
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
